@@ -70,7 +70,6 @@ const Spots: React.FC<{ selectedDates: [moment.Moment | null, moment.Moment | nu
     fetch(url)
       .then(response => response.json())
       .then(data => {
-<<<<<<< HEAD
 
         console.log("Fetched attractions data:", data);
 
@@ -84,12 +83,6 @@ const Spots: React.FC<{ selectedDates: [moment.Moment | null, moment.Moment | nu
           setDisplayedSpots([]);
         }
 
-=======
-        console.log("Fetched attractions data:", data);
-        setSpots(data);
-        setDisplayedSpots(data.slice(0, batchSize));
-        setCurrentIndex(batchSize);
->>>>>>> upstream/master
       })
       .catch(error => {
         console.error('Error fetching attractions data:', error);

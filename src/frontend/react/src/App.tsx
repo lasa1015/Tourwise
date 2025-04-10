@@ -22,15 +22,9 @@ import { LastUpdatedProvider } from "./contexts/LastUpdatedContext";
 import Dashboard from "./pages/user/User";
 
 // Temporarily disable console log, warn and error
-<<<<<<< HEAD
 // console.log = () => {};
 // console.warn = () => {};
 // console.error = () => {};
-=======
-console.log = () => {};
-console.warn = () => {};
-console.error = () => {};
->>>>>>> upstream/master
 
 const App: React.FC = () => {
   const [selectedDates, setSelectedDates] = useState<

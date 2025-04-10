@@ -168,15 +168,24 @@ public class AttractionService {
     }
 
     private boolean isOpenOnDays(String formattedHours, List<Integer> daysOfWeek) {
+        if (formattedHours == null || formattedHours.trim().isEmpty()) return false;
+    
         for (String entry : formattedHours.split(",")) {
             String[] parts = entry.trim().split(":");
-            int day = Integer.parseInt(parts[0].trim());
-            if (daysOfWeek.contains(day)) {
-                return true;
+            if (parts.length == 0 || parts[0].trim().isEmpty()) continue;
+    
+            try {
+                int day = Integer.parseInt(parts[0].trim());
+                if (daysOfWeek.contains(day)) {
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("⚠ 无法解析日期部分: " + parts[0]);
             }
         }
         return false;
     }
+    
 
     private Comparator<Attraction> getComparator(String sortBy, String order) {
         Comparator<Attraction> comparator;
