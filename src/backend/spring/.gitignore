@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+HELP.md
+>>>>>>> upstream/master
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar

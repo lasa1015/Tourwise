@@ -5,8 +5,11 @@ import mapOptions from '../../utils/mapStyles';
 import googleMapsConfig from '../../utils/apiConfig';
 
 const Map_Spots = ({ events, onMarkerClick, activeSpot, popupSpot, onPopupClose, hoveredSpot }) => {
+<<<<<<< HEAD
 
   console.log("Map_Spots 传入的 events 是：", events);
+=======
+>>>>>>> upstream/master
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: googleMapsConfig.googleMapsApiKey,
     libraries: googleMapsConfig.libraries,
@@ -77,7 +80,11 @@ const Map_Spots = ({ events, onMarkerClick, activeSpot, popupSpot, onPopupClose,
         mapRef.current = map;
       }}
     >
+<<<<<<< HEAD
       {Array.isArray(events) &&  events.length > 0 && events.map(event => {
+=======
+      {events.map(event => {
+>>>>>>> upstream/master
         const isActive = activeSpot?.index === event.index || hoveredSpot?.index === event.index || selectedMarker?.index === event.index || hoveredMarker?.index === event.index;
         const iconUrl = getIconUrl(event.category, isActive);
         const iconSize = isActive ? 45 : 38;
