@@ -1,0 +1,12 @@
+.card-container {
+  overflow-y: scroll;
+  msoverflowstyle: none; /* IE and Edge */
+  scrollbarwidth: none; /* Firefox */
+}
+
+.card-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+}
+
+
+
