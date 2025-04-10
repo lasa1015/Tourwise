@@ -3,6 +3,6 @@ FROM postgres:latest
 ENV POSTGRES_USER ${POSTGRES_USER}
 ENV POSTGRES_PASSWORD ${POSTGRES_PASSWORD}
 ENV POSTGRES_DB ${POSTGRES_DB}
-COPY backup/backup.sql /docker-entrypoint-initdb.d/
+COPY backup/full_backup.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 5432
