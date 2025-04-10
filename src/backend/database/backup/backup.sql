@@ -1,7 +1,7 @@
 --
 -- PostgreSQL database dump
 --
-
+SET search_path TO public;
 -- Dumped from database version 15.7 (Homebrew)
 -- Dumped by pg_dump version 16.3
 

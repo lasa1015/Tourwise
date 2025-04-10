@@ -37,10 +37,7 @@ public class AttractionServiceTest {
     private void loadTestData(AttractionService attractionService, InputStream inputStream) throws Exception {
         List<Attraction> testAttractions = new ArrayList<>();
         CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-<<<<<<< HEAD
         String resourcePath = "classpath:/attractions_test.csv"; // 可以手动写一个路径提示
-=======
->>>>>>> upstream/master
 
         reader.readNext(); // Skip header
 
