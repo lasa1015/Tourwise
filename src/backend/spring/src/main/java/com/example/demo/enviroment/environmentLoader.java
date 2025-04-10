@@ -1,15 +1,11 @@
 package com.example.demo.enviroment;
-<<<<<<< HEAD
 
 import java.io.File;
-=======
->>>>>>> upstream/master
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 public class environmentLoader {
-<<<<<<< HEAD
 
     public static void load() {
         try {
@@ -34,14 +30,6 @@ public class environmentLoader {
             }
 
             FileInputStream fis = new FileInputStream(envFile);
-=======
-    public static void load() {
-        try {
-            Properties properties = new Properties();
-            String projectRoot = System.getProperty("user.dir");
-            String envFilePath = projectRoot + "/../../../.env";
-            FileInputStream fis = new FileInputStream(envFilePath);
->>>>>>> upstream/master
             properties.load(fis);
             fis.close();
 
@@ -49,7 +37,6 @@ public class environmentLoader {
                 String value = properties.getProperty(key);
                 System.setProperty(key, value);
             }
-<<<<<<< HEAD
 
             System.out.println("✅ 成功加载 .env 文件：" + envFile.getAbsolutePath());
 
@@ -58,11 +45,3 @@ public class environmentLoader {
         }
     }
 }
-=======
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
->>>>>>> upstream/master
