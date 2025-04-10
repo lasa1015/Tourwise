@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.DailyForecastData;
+import com.tourwise.backend.model.DailyForecastData;
+import com.tourwise.backend.repository.DailyWeatherDataRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

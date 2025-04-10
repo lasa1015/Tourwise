@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Event;
-import com.example.demo.service.EventService;
+import com.tourwise.backend.controller.EventController;
+import com.tourwise.backend.model.Event;
+import com.tourwise.backend.service.EventService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;

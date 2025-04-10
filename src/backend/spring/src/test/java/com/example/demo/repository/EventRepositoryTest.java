@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Event;
+import com.tourwise.backend.model.Event;
+import com.tourwise.backend.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

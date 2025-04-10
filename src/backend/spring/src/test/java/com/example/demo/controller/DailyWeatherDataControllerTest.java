@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DailyForecastData;
-import com.example.demo.service.DailyWeatherDataService;
+import com.tourwise.backend.controller.DailyWeatherDataController;
+import com.tourwise.backend.model.DailyForecastData;
+import com.tourwise.backend.service.DailyWeatherDataService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;

@@ -1,0 +1,36 @@
+package com.tourwise.scrapper;
+
+import com.tourwise.scrapper.enviroment.environmentLoader;
+import com.tourwise.scrapper.service.DailyWeatherForecastService;
+import com.tourwise.scrapper.service.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+
+@EnableScheduling
+public class ScrapperApplication implements CommandLineRunner {
+
+    @Autowired
+    private DailyWeatherForecastService dailyWeatherForecastService;
+
+    @Autowired
+    private EventService eventService;
+
+    public static void main(String[] args) {
+        environmentLoader.load(); // Load environment variables from .env file
+        SpringApplication.run(ScrapperApplication.class, args);
+
+    }
+
+    @Override
+    public void run(String... args){
+        dailyWeatherForecastService.getDailyForecasts();
+        System.out.println("Daily weather forecast data is stored in tables");
+        eventService.fetchAndSaveEvents();
+        System.out.println("Event data is fetched and stored in events table");
+    }
+}

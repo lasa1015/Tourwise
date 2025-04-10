@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ItineraryItem;
-import com.example.demo.model.UserSelection;
-import com.example.demo.service.ItineraryService;
-import com.example.demo.service.UserService;
+import com.tourwise.backend.controller.ItineraryController;
+import com.tourwise.backend.model.ItineraryItem;
+import com.tourwise.backend.model.UserSelection;
+import com.tourwise.backend.service.ItineraryService;
+import com.tourwise.backend.service.UserService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

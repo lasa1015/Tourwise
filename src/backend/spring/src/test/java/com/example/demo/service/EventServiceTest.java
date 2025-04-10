@@ -1,7 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Event;
-import com.example.demo.repository.EventRepository;
+import com.tourwise.backend.model.Event;
+import com.tourwise.backend.repository.EventRepository;
+import com.tourwise.backend.service.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
