@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.tourwise.backend.model.Attraction;
-import com.tourwise.backend.service.AttractionService;
 import com.opencsv.CSVReader;
+import com.tourwise.backend.service.AttractionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,10 +38,6 @@ public class AttractionServiceTest {
     private void loadTestData(AttractionService attractionService, InputStream inputStream) throws Exception {
         List<Attraction> testAttractions = new ArrayList<>();
         CSVReader reader = new CSVReader(new InputStreamReader(inputStream));
-<<<<<<< HEAD
-        String resourcePath = "classpath:/attractions_test.csv"; // 可以手动写一个路径提示
-=======
->>>>>>> upstream/master
 
         reader.readNext(); // Skip header
 

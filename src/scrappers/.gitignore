@@ -1,9 +1,0 @@
-# === Build directories ===
-/build/
-/bin/
-/out/
-/.gradle/
-
-# === Gradle wrapper (binary only) ===
-!gradle/wrapper/gradle-wrapper.jar
-
