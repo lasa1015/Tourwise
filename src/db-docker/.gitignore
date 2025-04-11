@@ -1,0 +1,4 @@
+/backup/
+/backup_archived/
+/local_data/*
+!/local_data/.gitkeep
