@@ -1,6 +1,11 @@
 # ========== Environment Variables and Sensitive Info ==========
 .env
 
+#========== Gradle Wrapper and build folders =============
+.gradle/
+**/build/
+**/bin/
+
 # ========== Java / Maven / Gradle ==========
 target/
 build/
@@ -9,57 +14,13 @@ build/
 *.war
 *.ear
 
-# Maven Wrapper
-!**/src/main/**/target/
-!**/src/test/**/target/
-!src/backend/frameworks/spring_boot/.mvn/wrapper/maven-wrapper.jar
-
-# Gradle Wrapper and build folders
-.gradle/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-# Spring Tool Suite (STS)
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-# ========== IntelliJ IDEA ==========
+# ========== Dev Tool ==========
 .idea/
-*.iml
-*.ipr
-*.iws
-
-# ========== VS Code ==========
 .vscode/
-
-# ========== NetBeans ==========
-/nbproject/private/
-/nbbuild/
-
-/nbdist/
-/.nb-gradle/
-
-# ========== Node.js ==========
-/src/frontend/node_modules/
-
-# ========== Jupyter Notebooks ==========
-/src/data_processing/notebooks/.ipynb_checkpoints/
-/src/data_processing/notebooks/taxi/.ipynb_checkpoints/
-
-# ========== Project-Specific Files to Ignore ==========
-/src/backend/scrappers/gradle/
-/src/backend/spring/busyness_predictions.json
-/src/deployment/config/
+node_modules/
 
 # === OS-specific ===
 .DS_Store
 Thumbs.db
 
-
-node_modules/
 dist/
