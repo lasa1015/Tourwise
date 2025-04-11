@@ -41,7 +41,7 @@ public class PredictionScheduler {
 
     @Scheduled(initialDelay = 5000, fixedRate = 3600000)
     public void calculateAndSaveBusyness() {
-        System.out.println("📍 [Scheduler] Start running prediction scheduler...");
+        System.out.println("✅ [Scheduler] Start running prediction scheduler...");
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusDays(29);
         Map<Integer, Map<String, Map<String, Float>>> result = new TreeMap<>();
@@ -52,9 +52,10 @@ public class PredictionScheduler {
             System.out.println("✅ Loaded " + taxiZones.size() + " taxi zones from CSV.");
 
             // Step 2: Loop through days
+            System.out.println("✅ Prediction is running: " + startDate + " to " + endDate);
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
                 String dateKey = date.toString();
-                System.out.println("📅 Predicting date: " + dateKey);
+
 
                 for (int taxiZone : taxiZones) {
                     Map<String, Map<String, Float>> dateMap = result.computeIfAbsent(taxiZone, k -> new TreeMap<>());
@@ -67,7 +68,7 @@ public class PredictionScheduler {
                         try {
                             float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
                             hourlyPredictions.put(timeKey, prediction);
-                            System.out.println("✅ Predicted zone " + taxiZone + " at " + timeKey + " = " + prediction);
+//                            System.out.println("✅ Predicted zone " + taxiZone + " at " + timeKey + " = " + prediction);
                         } catch (IllegalArgumentException e) {
                             hourlyPredictions.put(timeKey, -1.0f);
                             System.err.println("⚠️  IllegalArgumentException for zone " + taxiZone + " at " + timeKey);
@@ -83,7 +84,7 @@ public class PredictionScheduler {
             }
 
             this.savedResult = result;
-            System.out.println("🎉 Prediction results saved to memory successfully.");
+            System.out.println("✅ Prediction results saved to memory successfully.");
 
         } catch (Exception e) {
             System.err.println("❌ Error occurred in calculateAndSaveBusyness(): " + e.getMessage());

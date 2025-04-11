@@ -1,7 +1,6 @@
 
 FROM node:hydrogen-alpine3.20 as build
 
-
 WORKDIR /app
 
 COPY package*.json ./

@@ -40,7 +40,7 @@ build/
 # ========== NetBeans ==========
 /nbproject/private/
 /nbbuild/
-/dist/
+
 /nbdist/
 /.nb-gradle/
 
@@ -59,3 +59,7 @@ build/
 # === OS-specific ===
 .DS_Store
 Thumbs.db
+
+
+node_modules/
+dist/
