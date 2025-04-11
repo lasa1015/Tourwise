@@ -3,6 +3,8 @@ package com.tourwise.scrapper.service;
 import com.tourwise.scrapper.model.EventData;
 import com.tourwise.scrapper.repository.EventRepository;
 import com.tourwise.scrapper.scrapers.EventScraper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
+    private static final Logger logger = LoggerFactory.getLogger(EventService.class);
 
     @Autowired
     private EventScraper eventScraper;
@@ -77,26 +80,32 @@ public class EventService {
         return (intersectCount % 2) == 1;
     }
 
-    @Scheduled(fixedRate = 10800000)
+    @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
     @Transactional
     public void fetchAndSaveEvents() {
+
+        logger.info("🗓️ [EventService] Starting event update process...");
+
         // Retry mechanism to handle potential concurrency issues
         int retryCount = 0;
         boolean success = false;
 
         while (retryCount < 3 && !success) {
             try {
-                // Delete all the data
+                logger.info("📅 [EventService] Clearing existing events from database...");
                 eventRepository.deleteAllInBatch();
 
-                // Fetch the new data
                 ZoneId newYorkZone = ZoneId.of("America/New_York");
                 LocalDateTime nowInNewYork = LocalDateTime.now(newYorkZone);
                 long startDate = nowInNewYork.toEpochSecond(ZoneOffset.UTC);
                 long endDate = nowInNewYork.plusDays(30).toEpochSecond(ZoneOffset.UTC);
+                logger.info("📅 [EventService] Fetching events from {} to {}", startDate, endDate);
+
                 List<EventData> events = eventScraper.fetchYelpEvents(0, startDate, endDate);
 
                 if (events != null && !events.isEmpty()) {
+                    logger.info("📅 [EventService] {} events fetched from Yelp API.", events.size());
+
                     List<EventData> newEvents = events.stream()
                             .filter(event -> !event.getIs_canceled())
                             .filter(event -> event.getName() != null && !event.getName().isEmpty())
@@ -121,7 +130,7 @@ public class EventService {
                             .filter(event -> isPointInPolygon(event.getLatitude(), event.getLongitude(), ManhattanArea))
                             .collect(Collectors.toList());
 
-                    // Skip the duplicate events
+                    int savedCount = 0;
                     for (EventData event : newEvents) {
                         boolean exists = eventRepository.existsEventByNameOrUrl(
                                 event.getName(), event.getEvent_site_url(), event.getImage_url()
@@ -144,12 +153,20 @@ public class EventService {
                             event.setTime_start(formatLocalDateTime(timeStart));
                             event.setTime_end(formatLocalDateTime(timeEnd));
                             eventRepository.save(event);
+                            savedCount++;
                         }
+
+
                     }
+                    logger.info("✅ [EventService] Successfully saved {} new events to the database.", savedCount);
+                } else {
+                    logger.warn("⚠️ [EventService] No events received from Yelp API.");
                 }
+
                 success = true;
             } catch (Exception e) {
                 retryCount++;
+                logger.error("❌ [EventService] Error while fetching or saving events (attempt {}): {}", retryCount, e.getMessage());
                 if (retryCount >= 3) {
                     throw e; // Rethrow the exception if maximum retry count is reached
                 }

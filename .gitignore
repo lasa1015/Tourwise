@@ -55,3 +55,7 @@ build/
 /src/backend/scrappers/gradle/
 /src/backend/spring/busyness_predictions.json
 /src/deployment/config/
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db

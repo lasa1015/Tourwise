@@ -6,8 +6,8 @@ plugins {
 	id 'io.freefair.lombok' version '8.6'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+group = 'com.tourwise.scrapper'
+version = '1.0.0'
 sourceCompatibility = '21'
 
 repositories {
@@ -26,7 +26,7 @@ dependencies {
 
 
 springBoot {
-	mainClass = 'com.example.demo.DemoApplication'
+	mainClass = 'com.tourwise.scrapper.ScrapperApplication'
 }
 
 jar {

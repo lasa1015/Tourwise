@@ -1,7 +1,7 @@
 package com.tourwise.backend.service;
 
-import com.example.backend.model.*;
-import com.example.demo.model.*;
+import com.tourwise.backend.model.*;
+import com.tourwise.backend.model.*;
 import com.tourwise.backend.model.*;
 import com.tourwise.backend.repository.EventRepository;
 import com.tourwise.backend.repository.ItinerarySavedItemsRepository;

@@ -41,15 +41,22 @@ public class EventScraper {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            logger.info("Requesting URL: " + url);
+            logger.info("📅 [EventScraper] Sending request to Yelp API...");
+
             ResponseEntity<YelpResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, YelpResponse.class);
-            logger.info("Response received: " + response.getBody());
-            return response.getBody().getEvents();
+
+            if (response.getBody() != null && response.getBody().getEvents() != null) {
+                logger.info("✅ [EventScraper] Successfully fetched {} events from Yelp API.", response.getBody().getEvents().size());
+                return response.getBody().getEvents();
+            } else {
+                logger.warn("⚠️ [EventScraper] Yelp API responded, but no events found.");
+            }
+
         } catch (HttpClientErrorException e) {
-            logger.error("API request failed with status code: {}", e.getStatusCode());
-            logger.error("Error response body: {}", e.getResponseBodyAsString());
+            logger.error("❌ [EventScraper] Yelp API returned error status: {}", e.getStatusCode());
+            logger.error("📄 [EventScraper] Response body: {}", e.getResponseBodyAsString());
         } catch (RestClientException e) {
-            logger.error("API request failed: {}", e.getMessage());
+            logger.error("❌ [EventScraper] Failed to fetch events from Yelp API: {}", e.getMessage());
         }
 
         return Collections.emptyList();

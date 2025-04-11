@@ -29,16 +29,22 @@ public class DailyWeatherForecastScraper {
     private String countryCode;
 
     public WeatherDataRaw fetchWeatherData() {
-        logger.info("Starting to fetch weather data");
+        logger.info("\uD83C\uDF24\uFE0F [WeatherScraper] Starting to fetch weather forecast data...");
 
         RestTemplate restTemplate = new RestTemplate();
         String url = String.format("https://pro.openweathermap.org/data/2.5/forecast/climate?q=%s,%s,%s&appid=%s",
                 cityName, stateCode, countryCode, apiKey);
 
         try {
-            return restTemplate.getForObject(url, WeatherDataRaw.class);
+            WeatherDataRaw response = restTemplate.getForObject(url, WeatherDataRaw.class);
+            if (response != null && response.getList() != null) {
+                logger.info("✅[WeatherScraper] Successfully fetched {} days of weather forecast data.", response.getList().size());
+            } else {
+                logger.warn(" ⚠\uFE0F【empty】[WeatherScraper] API responded, but weather data list is null or empty.");
+            }
+            return response;
         } catch (RestClientException e) {
-            logger.error("Error fetching weather data: {}", e.getMessage());
+            logger.error(" ❌【Failed】 [WeatherScraper] Failed to fetch weather forecast data: {}", e.getMessage());
             return null;
         }
     }

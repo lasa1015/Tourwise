@@ -5,6 +5,8 @@ import com.tourwise.scrapper.repository.DailyWeatherForecastRepository;
 import com.tourwise.scrapper.scrapers.DailyWeatherForecastScraper;
 import com.tourwise.scrapper.scrapers.DailyWeatherForecastScraper.WeatherDataRaw;
 import com.tourwise.scrapper.scrapers.DailyWeatherForecastScraper.DailyForecastDataRaw;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class DailyWeatherForecastService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DailyWeatherForecastService.class);
 
     private final DailyWeatherForecastRepository dailyWeatherForecastRepository;
     private final DailyWeatherForecastScraper dailyWeatherForecastScraper;
@@ -29,18 +33,22 @@ public class DailyWeatherForecastService {
 
     @Scheduled(fixedRate = 3600000)
     public void updateDailyWeather() {
+        logger.info("\uD83C\uDF24\uFE0F [WeatherService] Starting scheduled weather forecast update...");
         WeatherDataRaw weatherDataRaw = dailyWeatherForecastScraper.fetchWeatherData();
 
         if (weatherDataRaw != null && weatherDataRaw.getList() != null && !weatherDataRaw.getList().isEmpty()) {
-            // Delete old data
+            logger.info("\uD83C\uDF24\uFE0F [WeatherService] Clearing old weather forecast data...");
             dailyWeatherForecastRepository.deleteAll();
 
-            // Save latest weather forecast
             List<DailyWeatherForecastData> dailyForecasts = weatherDataRaw.getList().stream()
                     .map(this::convertToDailyForecastData)
                     .collect(Collectors.toList());
 
+            logger.info("\uD83C\uDF24\uFE0F [WeatherService] trying to save {} forecast records into the database...", dailyForecasts.size());
             dailyWeatherForecastRepository.saveAll(dailyForecasts);
+            logger.info("✅ [WeatherService] Weather forecast data successfully saved into the database.");
+        } else {
+            logger.warn("⚠️ [WeatherService] No weather forecast data received or list is empty. Skipping update.");
         }
     }
 

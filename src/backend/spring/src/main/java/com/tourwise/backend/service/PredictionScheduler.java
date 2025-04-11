@@ -38,55 +38,59 @@ public class PredictionScheduler {
         HARDCODED_BUSINESS_VALUES.put("SUNDAY", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 58, 78, 89, 89, 82, 64, 39, 0, 0, 0, 0, 0, 0, 0));
     }
 
+
     @Scheduled(initialDelay = 5000, fixedRate = 3600000)
     public void calculateAndSaveBusyness() {
+        System.out.println("📍 [Scheduler] Start running prediction scheduler...");
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusDays(29);
         Map<Integer, Map<String, Map<String, Float>>> result = new TreeMap<>();
 
         try {
-            // Read taxi zones from CSV
+            // Step 1: Read taxi zones
             List<Integer> taxiZones = readTaxiZonesFromCSV();
+            System.out.println("✅ Loaded " + taxiZones.size() + " taxi zones from CSV.");
 
-            // Loop through each day in the date range
+            // Step 2: Loop through days
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
                 String dateKey = date.toString();
+                System.out.println("📅 Predicting date: " + dateKey);
 
-                // Loop through each taxi zone
                 for (int taxiZone : taxiZones) {
                     Map<String, Map<String, Float>> dateMap = result.computeIfAbsent(taxiZone, k -> new TreeMap<>());
                     Map<String, Float> hourlyPredictions = dateMap.computeIfAbsent(dateKey, k -> new TreeMap<>());
 
-                    // Loop through each hour of the day
                     for (int hour = 0; hour < 24; hour++) {
                         LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(hour, 0));
                         String timeKey = dateTime.toString();
+
                         try {
                             float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
                             hourlyPredictions.put(timeKey, prediction);
+                            System.out.println("✅ Predicted zone " + taxiZone + " at " + timeKey + " = " + prediction);
                         } catch (IllegalArgumentException e) {
                             hourlyPredictions.put(timeKey, -1.0f);
+                            System.err.println("⚠️  IllegalArgumentException for zone " + taxiZone + " at " + timeKey);
                         } catch (XGBoostError e) {
-                            e.printStackTrace();
                             hourlyPredictions.put(timeKey, -1.0f);
+                            System.err.println("❌ XGBoostError for zone " + taxiZone + " at " + timeKey + ": " + e.getMessage());
                         }
                     }
                 }
 
-                // Add hardcoded busyness data for zones 103, 104, 105
+                // Step 3: Add hardcoded zones
                 addHardcodedBusyness(result, date, dateKey);
             }
 
-            // Save result to memory
             this.savedResult = result;
-            System.out.println("Successfully saved result to memory.");
+            System.out.println("🎉 Prediction results saved to memory successfully.");
 
         } catch (Exception e) {
+            System.err.println("❌ Error occurred in calculateAndSaveBusyness(): " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Error occurred while calculating and saving busyness.");
-
         }
     }
+
 
     private void addHardcodedBusyness(Map<Integer, Map<String, Map<String, Float>>> result, LocalDate date, String dateKey) {
         String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase();

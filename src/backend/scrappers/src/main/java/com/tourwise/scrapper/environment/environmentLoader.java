@@ -1,4 +1,4 @@
-package com.tourwise.scrapper.enviroment;
+package com.tourwise.scrapper.environment;
 
 import java.io.File;
 import java.io.FileInputStream;
