@@ -1,0 +1,4 @@
+rootProject.name = 'tourwise'
+
+include 'src:backend'
+include 'src:scrappers'

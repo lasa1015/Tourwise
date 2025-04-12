@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8081",
   "start": "react-scripts start --proxy-setup ./src/setupProxy.js",
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
+    "cross-env": "^7.0.3",
     "http-proxy-middleware": "^3.0.0"
   }
 }

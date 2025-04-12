@@ -29,7 +29,7 @@ const RegisterComponent: React.FC<{
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/users/register", {
+      const response = await fetch("http://54.228.23.122:8080/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

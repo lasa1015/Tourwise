@@ -3,7 +3,7 @@ FROM gradle:8.7.0-jdk21 AS dependencies
 WORKDIR /app
 
 COPY build.gradle .
-COPY settings.gradle .
+COPY ../../settings.gradle .
 
 RUN gradle build --no-daemon || return 0
 

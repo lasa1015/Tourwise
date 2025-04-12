@@ -15,7 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://localhost:3000", // Allow requests from localhost:3000 (dev)
                         "http://frontend:3000", // Allow requests from frontend service
                         "http://backend:8080",  // Allow requests from backend service
-                        "https://tourwise.org" // Allow requests from your production
+                        "http://tourwise.site:3000",
+                        "http://54.228.23.122:3000"
 
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

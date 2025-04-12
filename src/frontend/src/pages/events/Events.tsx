@@ -31,8 +31,8 @@ const Events = ({ selectedDates }) => {
     setLoading(true); 
 
     let url = contextSelectedDates
-      ? '/api/events/filter_within_date'
-      : '/api/events/filter';
+      ? 'http://54.228.23.122:8080/events/filter_within_date'
+      : 'http://54.228.23.122:8080/events/filter';
 
     const params = new URLSearchParams();
 
