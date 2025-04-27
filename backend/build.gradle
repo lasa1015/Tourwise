@@ -6,7 +6,7 @@ plugins {
 	id 'java'
 }
 
-group = 'com.example'
+group = 'com.shaluo.tourwise' // ⚡️ 这里改了！
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -28,12 +28,8 @@ dependencies {
 	implementation 'org.postgresql:postgresql'
 	implementation 'com.h2database:h2'
 	implementation 'com.opencsv:opencsv:5.5.2'
-
 	implementation 'org.locationtech.jts:jts-core:1.18.0'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
-
-	// Dependencies for Spring Security and JWT
-	// Other dependencies
 	implementation 'commons-codec:commons-codec:1.15'
 	implementation 'com.auth0:java-jwt:4.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
@@ -42,20 +38,14 @@ dependencies {
 	implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
 	implementation 'org.hibernate.orm:hibernate-core:6.2.6.Final'
 	implementation 'org.antlr:antlr4-runtime:4.10.1'
-
-	// XGBoost4J dependencies
 	implementation ('ml.dmlc:xgboost4j_2.13:2.0.3') {
 		exclude group: "commons-logging", module: 'commons-logging'
 	}
 	implementation ('ml.dmlc:xgboost4j-spark_2.13:2.0.3') {
 		exclude group: "commons-logging", module: 'commons-logging'
 	}
-
-	// Native library dependencies for XGBoost
 	runtimeOnly 'org.bytedeco:openblas:0.3.21-1.5.8'
 	runtimeOnly 'org.bytedeco:openblas-platform:0.3.21-1.5.8'
-
-	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
@@ -75,7 +65,7 @@ test {
 jar {
 	manifest {
 		attributes(
-				'Main-Class': 'com.example.demo.DemoApplication'
+				'Main-Class': 'com.shaluo.tourwise.BackendApplication' // ⚡️ 这里改了！
 		)
 	}
 	enabled = true

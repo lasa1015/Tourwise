@@ -1,6 +1,6 @@
-
 .env
-personal_notes
+personal_notes/
+personal_logs/
 .git/
 node_modules/
 logs/
@@ -9,6 +9,8 @@ logs/
 venv/
 dist/
 *.iodraw
+
+
 
 
 #========== Gradle Wrapper and build folders =============

@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.tourwise.backend.model.DailyForecastData;
-import com.tourwise.backend.repository.DailyWeatherDataRepository;
-import com.tourwise.backend.service.DailyWeatherDataService;
+import com.shaluo.tourwise.model.DailyForecastData;
+import com.shaluo.tourwise.repository.DailyWeatherDataRepository;
+import com.shaluo.tourwise.service.DailyWeatherDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

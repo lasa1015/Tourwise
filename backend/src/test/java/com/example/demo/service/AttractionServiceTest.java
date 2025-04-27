@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.tourwise.backend.model.Attraction;
+import com.shaluo.tourwise.model.Attraction;
 import com.opencsv.CSVReader;
-import com.tourwise.backend.service.AttractionService;
+import com.shaluo.tourwise.service.AttractionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
