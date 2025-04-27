@@ -62,7 +62,7 @@ const ZoneBusyness: React.FC<ZoneBusynessProps> = ({ zoneId, zoneName, onClose, 
       const endDate = selectedDates[1].format('YYYY-MM-DD');
 
       try {
-        const response = await fetch(`http://54.228.23.122:8080/busyness/predict_all_sort_by_zone?startDate=${startDate}&endDate=${endDate}`, {
+        const response = await fetch(`/api/busyness/predict_all_sort_by_zone?startDate=${startDate}&endDate=${endDate}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

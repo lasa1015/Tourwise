@@ -13,7 +13,7 @@ import java.util.Map;
 // 提供注册、登录、获取邮箱、更改密码、验证 token 的接口，和用户身份验证相关的所有 HTTP API。
 
 @RestController  // 标记这是一个 REST API 控制器，返回的是 JSON 而不是页面
-@RequestMapping("/users")  // 所有这个类里的接口，都会以 /users 开头
+@RequestMapping("/api/users")  // 所有这个类里的接口，都会以 /users 开头
 public class UserController {
 
     @Autowired

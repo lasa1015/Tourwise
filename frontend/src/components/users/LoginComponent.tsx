@@ -36,7 +36,7 @@ const LoginComponent: React.FC<{
     setMessage("");
 
     try {
-      const response = await fetch("http://54.228.23.122:8080/users/login", {
+      const response = await fetch("api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

@@ -15,7 +15,7 @@ const FetchItinerary: React.FC = () => {
 
     const fetchItinerary = async () => {
       try {
-        const url = `http://54.228.23.122:8080/itinerary/user?token=${token}&timestamp=${new Date().getTime()}`;
+        const url = `api/itinerary/user?token=${token}&timestamp=${new Date().getTime()}`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {

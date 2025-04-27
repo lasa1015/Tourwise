@@ -19,9 +19,9 @@ const AccountSettings: React.FC = () => {
 
         const fetchStatistics = async () => {
             try {
-                // const url = `/api/itinerary/statistics?token=${token}&timestamp=${new Date().getTime()}`;
+                
 
-                const url = `http://54.228.23.122:8080/itinerary/statistics?token=${token}&timestamp=${new Date().getTime()}`;
+                const url = `api/itinerary/statistics?token=${token}&timestamp=${new Date().getTime()}`;
 
                 const response = await fetch(url, {
                     method: 'GET',
@@ -71,7 +71,7 @@ const AccountSettings: React.FC = () => {
     const handleChangePassword = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://54.228.23.122:8080/users/changePassword', {
+            const response = await fetch('api/users/changePassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

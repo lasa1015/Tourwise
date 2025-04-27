@@ -1,7 +1,14 @@
 package com.shaluo.tourwise.service;
 
 
-import com.shaluo.tourwise.model.*;
+import com.shaluo.tourwise.model.Event;
+import com.shaluo.tourwise.model.Attraction;
+
+import com.shaluo.tourwise.model.ItineraryItem;
+import com.shaluo.tourwise.model.ItinerarySaved;
+import com.shaluo.tourwise.model.ItinerarySavedItems;
+import com.shaluo.tourwise.model.TimeSlot;
+import com.shaluo.tourwise.model.User;
 import com.shaluo.tourwise.repository.EventRepository;
 import com.shaluo.tourwise.repository.ItinerarySavedItemsRepository;
 import com.shaluo.tourwise.repository.ItinerarySavedRepository;

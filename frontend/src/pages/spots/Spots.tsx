@@ -52,15 +52,13 @@ const Spots: React.FC<{ selectedDates: [moment.Moment | null, moment.Moment | nu
       const startDate = contextSelectedDates[0].format('YYYY-MM-DD');
       const endDate = contextSelectedDates[1].format('YYYY-MM-DD');
 
-      // url = `/api/attractions/filter_within_date?startDate=${startDate}&endDate=${endDate}&sortBy=${sortOption}`;
-      url = `http://54.228.23.122:8080/attractions/filter_within_date?startDate=${startDate}&endDate=${endDate}&sortBy=${sortOption}`;
-
+      url = `/api/attractions/filter_within_date?startDate=${startDate}&endDate=${endDate}&sortBy=${sortOption}`;
+ 
     }
 
     else {
-      // url = `/api/attractions/filter?sortBy=${sortOption}`;
+      url = `/api/attractions/filter?sortBy=${sortOption}`;
 
-      url = `http://54.228.23.122:8080/attractions/filter?sortBy=${sortOption}`;
 
     }
 

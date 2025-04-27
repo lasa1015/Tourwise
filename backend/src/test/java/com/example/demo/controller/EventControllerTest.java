@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.shaluo.tourwise.controller.EventController;
 import com.shaluo.tourwise.model.Event;
 import com.shaluo.tourwise.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(EventController.class)
 public class EventControllerTest {

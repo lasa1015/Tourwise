@@ -15,7 +15,7 @@ import java.util.Arrays;
 // 这个类本身不做任何数据处理，一切交给 Service 层。
 
 @RestController
-@RequestMapping("/attractions")
+@RequestMapping("/api/attractions")
 public class AttractionController {
 
     @Autowired

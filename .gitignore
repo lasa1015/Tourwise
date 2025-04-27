@@ -1,11 +1,11 @@
-.env
+.env.prod
 personal_notes/
 personal_logs/
 .git/
 node_modules/
 logs/
 .tar
-.env*
+.env
 venv/
 dist/
 *.iodraw
@@ -38,3 +38,4 @@ node_modules/
 Thumbs.db
 
 dist/
+/backend/.env.prod

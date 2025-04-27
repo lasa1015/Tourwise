@@ -108,7 +108,7 @@ const Schedule: React.FC = () => {
   const fetchWeather = async (date: string) => {
     setLoadingWeather(true);
     try {
-      const response = await fetch(`http://54.228.23.122:8080/weather/by_date/${date}`);
+      const response = await fetch(`/api/weather/by_date/${date}`);
       const data = await response.json();
       setWeather(data[0]);
     } catch (error) {
@@ -120,7 +120,7 @@ const Schedule: React.FC = () => {
   const fetchBusynessData = async (date: string) => {
     try {
       const response = await fetch(
-        `http://54.228.23.122:8080/busyness/predict_all_sort_by_date_range?startDate=${date}&endDate=${date}`,
+        `/api/busyness/predict_all_sort_by_date_range?startDate=${date}&endDate=${date}`,
         {
           method: "POST",
           headers: {
@@ -195,7 +195,7 @@ const Schedule: React.FC = () => {
       console.log("Data to be sent to backend:", saveData);
 
       try {
-        const response = await fetch("http://54.228.23.122:8080/itinerary/save", {
+        const response = await fetch("/api/itinerary/save", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

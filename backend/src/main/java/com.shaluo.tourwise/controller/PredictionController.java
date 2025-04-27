@@ -21,7 +21,7 @@ import java.util.TreeMap;
 // 【Controller 里写了太多业务逻辑和数据处理，这些逻辑和“HTTP 请求处理”无关，应该在 PredictionService 里封装好。】
 
 @RestController  // 表示这是一个控制器类，返回的是 JSON 数据
-@RequestMapping("/busyness")    // 所有接口路径前缀为 /busyness
+@RequestMapping("/api/busyness")    // 所有接口路径前缀为 /busyness
 public class PredictionController {
 
     @Autowired

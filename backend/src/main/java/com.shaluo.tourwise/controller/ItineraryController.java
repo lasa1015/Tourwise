@@ -20,7 +20,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/itinerary")
+@RequestMapping("/api/itinerary")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ItineraryController {
 

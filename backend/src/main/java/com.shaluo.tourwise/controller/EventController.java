@@ -18,7 +18,7 @@ import java.util.List;
 // 负责接收前端关于 活动查询和筛选 的 HTTP 请求，然后调用 EventService 来返回活动数据
 
 @RestController
-@RequestMapping("/events")  // 这个控制器下的所有接口路径前缀都是 /events
+@RequestMapping("/api/events")  // 这个控制器下的所有接口路径前缀都是 /events
 public class EventController {
 
     @Autowired

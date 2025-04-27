@@ -93,7 +93,7 @@ public class PredictionScheduler {
 
                             // 如果输入有误，填 -1 作为预测失败的标志
                             hourlyPredictions.put(timeKey, -1.0f);
-                            System.err.println("⚠️  IllegalArgumentException for zone " + taxiZone + " at " + timeKey);
+//                            System.err.println("⚠️  IllegalArgumentException for zone " + taxiZone + " at " + timeKey);
                         } catch (XGBoostError e) {
                             hourlyPredictions.put(timeKey, -1.0f);
                             System.err.println("❌ XGBoostError for zone " + taxiZone + " at " + timeKey + ": " + e.getMessage());
