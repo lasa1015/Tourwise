@@ -1,5 +1,15 @@
-# ========== Environment Variables and Sensitive Info ==========
+
 .env
+personal_notes
+.git/
+node_modules/
+logs/
+.tar
+.env*
+venv/
+dist/
+*.iodraw
+
 
 #========== Gradle Wrapper and build folders =============
 .gradle/
