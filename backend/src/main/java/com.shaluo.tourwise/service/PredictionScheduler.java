@@ -46,7 +46,7 @@ public class PredictionScheduler {
         HARDCODED_BUSINESS_VALUES.put("SUNDAY", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 33, 58, 78, 89, 89, 82, 64, 39, 0, 0, 0, 0, 0, 0, 0));
     }
 
-    @Scheduled(initialDelay = 1000, fixedRate = 3600000)
+//    @Scheduled(initialDelay = 1000, fixedRate = 3600000)
     public void calculateAndSaveBusyness() {
         System.out.println("✅ [Scheduler] Start running prediction scheduler...");
 
