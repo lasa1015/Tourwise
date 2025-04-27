@@ -50,4 +50,17 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     // 按 ID 查找单个活动, 点开一个活动详情页面时用到的接口
     Optional<Event> findById(UUID id);
+
+    @Query("SELECT e FROM Event e WHERE " +
+            "e.time_start > :startDate AND " +
+            "(:name IS NULL OR CAST(e.name AS string) ILIKE '%' || CAST(:name AS string) || '%') AND " +
+            "(:isFree IS NULL OR e.is_free = :isFree) AND " +
+            "(:combined_categories IS NULL OR e.combined_category IN :combined_categories) " +
+            "ORDER BY e.time_start ASC")
+    List<Event> findFilteredEventsAfterDate(@Param("startDate") String startDate,
+                                            @Param("isFree") Boolean isFree,
+                                            @Param("combined_categories") List<String> combined_categories,
+                                            @Param("name") String name);
+
+
 }

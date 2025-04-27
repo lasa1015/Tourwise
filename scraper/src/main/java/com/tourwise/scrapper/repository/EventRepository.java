@@ -15,4 +15,7 @@ public interface EventRepository extends JpaRepository<EventData, UUID> {
     // 在爬虫中避免重复插入数据
     @Query("SELECT COUNT(e) > 0 FROM EventData e WHERE e.name = :name OR e.event_site_url = :eventSiteUrl OR e.image_url = :imageUrl")
     boolean existsEventByNameOrUrl(@Param("name") String name, @Param("eventSiteUrl") String eventSiteUrl, @Param("imageUrl") String imageUrl);
+
+    // 根据名字或者网址查找事件
+    EventData findByNameOrUrl(String name, String url, String imageUrl);
 }

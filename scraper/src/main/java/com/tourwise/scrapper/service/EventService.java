@@ -90,9 +90,8 @@ public class EventService {
 
     // 定时任务,每 3 小时自动执行一次
     @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
-    @Transactional  // @Transactional 确保批量操作时要么全部成功，要么回滚；
+    @Transactional
     public void fetchAndSaveEvents() {
-
         logger.info("🗓️ [EventService] Starting event update process...");
 
         int retryCount = 0;
@@ -100,27 +99,18 @@ public class EventService {
 
         while (retryCount < 3 && !success) {
             try {
-                logger.info("📅 [EventService] Clearing existing events from database...");
-
-                // 清空数据库
-                eventRepository.deleteAllInBatch();
-
                 ZoneId newYorkZone = ZoneId.of("America/New_York");
                 LocalDateTime nowInNewYork = LocalDateTime.now(newYorkZone);
 
-                // 构造请求时间范围（当前时间到未来 30 天）
                 long startDate = nowInNewYork.toEpochSecond(ZoneOffset.UTC);
                 long endDate = nowInNewYork.plusDays(30).toEpochSecond(ZoneOffset.UTC);
                 logger.info("📅 [EventService] Fetching events from {} to {}", startDate, endDate);
 
-                // 调用爬虫抓取数据
                 List<EventData> events = eventScraper.fetchYelpEvents(0, startDate, endDate);
 
-                // 进行数据过滤
                 if (events != null && !events.isEmpty()) {
                     logger.info("📅 [EventService] {} events fetched from Yelp API.", events.size());
 
-                    // 不要取消的活动,要有名称、图片、链接，起止时间要合理（最多跨一天），要在曼哈顿区域
                     List<EventData> newEvents = events.stream()
                             .filter(event -> !event.getIs_canceled())
                             .filter(event -> event.getName() != null && !event.getName().isEmpty())
@@ -146,36 +136,37 @@ public class EventService {
                             .collect(Collectors.toList());
 
                     int savedCount = 0;
+                    int updatedCount = 0;
+
                     for (EventData event : newEvents) {
                         boolean exists = eventRepository.existsEventByNameOrUrl(
                                 event.getName(), event.getEvent_site_url(), event.getImage_url()
                         );
 
-                        if (!exists) {
+                        if (exists) {
+                            // 如果已存在，找到并更新
+                            EventData existingEvent = eventRepository.findByNameOrUrl(
+                                    event.getName(), event.getEvent_site_url(), event.getImage_url()
+                            );
+                            existingEvent.setDescription(event.getDescription());
+                            existingEvent.setTime_start(event.getTime_start());
+                            existingEvent.setTime_end(event.getTime_end());
+                            existingEvent.setImage_url(event.getImage_url());
+                            existingEvent.setLatitude(event.getLatitude());
+                            existingEvent.setLongitude(event.getLongitude());
+                            existingEvent.setFetchTime(LocalDateTime.now());
+                            eventRepository.save(existingEvent);
+                            updatedCount++;
+                        } else {
+                            // 如果不存在，插入新数据
                             event.setId(UUID.randomUUID());
                             event.setFetchTime(LocalDateTime.now());
-                            LocalDateTime timeStart = convertToLocalDateTime(event.getTime_start());
-                            LocalDateTime timeEnd = event.getTime_end() != null ?
-                                    convertToLocalDateTime(event.getTime_end()) :
-                                    timeStart.plusHours(2);
-                            if (!timeStart.toLocalDate().equals(timeEnd.toLocalDate())) {
-                                if (timeStart.plusHours(2).isAfter(timeStart.toLocalDate().atTime(23, 59))) {
-                                    timeEnd = timeStart.toLocalDate().atTime(23, 59);
-                                } else {
-                                    timeEnd = timeStart.plusHours(2);
-                                }
-                            }
-                            event.setTime_start(formatLocalDateTime(timeStart));
-                            event.setTime_end(formatLocalDateTime(timeEnd));
-
-                            // 保存入库
                             eventRepository.save(event);
                             savedCount++;
                         }
-
-
                     }
-                    logger.info("✅ [EventService] Successfully saved {} new events to the database.", savedCount);
+
+                    logger.info("✅ [EventService] Successfully saved {} new events and updated {} existing events.", savedCount, updatedCount);
                 } else {
                     logger.warn("⚠️ [EventService] No events received from Yelp API.");
                 }
@@ -185,11 +176,12 @@ public class EventService {
                 retryCount++;
                 logger.error("❌ [EventService] Error while fetching or saving events (attempt {}): {}", retryCount, e.getMessage());
                 if (retryCount >= 3) {
-                    throw e; // Rethrow the exception if maximum retry count is reached
+                    throw e;
                 }
             }
         }
     }
+
 
     // 时间转换工具方法
     private LocalDateTime convertToLocalDateTime(String dateTimeWithOffset) {

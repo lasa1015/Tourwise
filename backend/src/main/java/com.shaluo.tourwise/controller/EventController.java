@@ -33,16 +33,23 @@ public class EventController {
             @RequestParam(value = "combined_categories", required = false) String combined_categories,
             @RequestParam(value = "name", required = false) String name) {
 
-        // 把名字转换为 SQL 模糊匹配的格式，例如 "new year parade" 变成："%new%year%parade%"
+        // 把名字处理成模糊搜索格式
         if (name != null && !name.isEmpty()) {
             name = "%" + String.join("%", name.trim().toLowerCase().split("\\s+")) + "%";
         }
 
-        // 把 "music,sports" 变成 ["music", "sports"]
-        List<String> categoryList = (combined_categories != null && !combined_categories.isEmpty()) ? Arrays.asList(combined_categories.split(",")) : null;
+        // 把分类处理成List
+        List<String> categoryList = (combined_categories != null && !combined_categories.isEmpty()) ?
+                Arrays.asList(combined_categories.split(",")) : null;
 
-        return eventService.getFilteredEventsWithoutDateRange(isFree, categoryList, name);
+        // 新增：今天纽约时间
+        ZoneOffset zoneOffset = ZoneOffset.of("-04:00"); // 纽约夏令时
+        String today = LocalDate.now().atStartOfDay().atOffset(zoneOffset).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
+        // 调用 service 时带上 "今天之后" 的条件
+        return eventService.getFilteredEventsAfterDate(today, isFree, categoryList, name);
     }
+
 
     // 带时间范围的活动筛选
     @GetMapping("/filter_within_date")

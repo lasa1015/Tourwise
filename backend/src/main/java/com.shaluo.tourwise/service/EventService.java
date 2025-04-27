@@ -35,6 +35,12 @@ public class EventService {
         loadGeoFeatures();
     }
 
+
+    public List<Event> getFilteredEventsAfterDate(String startDateTime, Boolean isFree, List<String> combinedCategories, String name) {
+        return eventRepository.findEventsAfterDate(startDateTime, isFree, combinedCategories, name);
+    }
+
+
     // 调用 eventRepository.findFilteredEventsWithinDateRange(...) 来查数据库中满足如下条件的活动：
     // 名字模糊匹配, 是否免费, 分类是否属于给定列表, 起始时间和结束时间范围重叠
     public List<Event> getFilteredEventsWithinDateRange(
