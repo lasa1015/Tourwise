@@ -18,6 +18,10 @@ import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.*;
 
+
+//根据 (taxiZone, datetime) 这两个字段一起当作“复合唯一键”，判断数据是否存在。
+//存在就更新。不存在就插入。
+
 @Service
 public class PredictionScheduler {
 

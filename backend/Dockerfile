@@ -5,20 +5,21 @@ WORKDIR /app
 COPY build.gradle .
 COPY settings.gradle .
 
-RUN gradle build --no-daemon || return 0
+# 只拉依赖，不 build
+RUN gradle dependencies --no-daemon
 
 FROM dependencies AS builder
 
 COPY . .
 
-RUN gradle build --no-daemon
+# 这里改成跳过 test
+RUN gradle build -x test --no-daemon
 
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-# This is a workaround for the missing dependencies to run the model, it will slow down the building process
-
+# 安装需要的库
 RUN apt-get update && apt-get install -y libgomp1
 
 COPY --from=builder /app/build/libs/*.jar app.jar

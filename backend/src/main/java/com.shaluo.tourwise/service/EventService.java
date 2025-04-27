@@ -37,7 +37,8 @@ public class EventService {
 
 
     public List<Event> getFilteredEventsAfterDate(String startDateTime, Boolean isFree, List<String> combinedCategories, String name) {
-        return eventRepository.findEventsAfterDate(startDateTime, isFree, combinedCategories, name);
+        return eventRepository.findFilteredEventsAfterDate(startDateTime, isFree, combinedCategories, name);
+
     }
 
 
