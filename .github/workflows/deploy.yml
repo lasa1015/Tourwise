@@ -1,0 +1,63 @@
+# 这个工作流程的名字，显示在 GitHub Actions 页面里
+name: Tourwise - Build and Push Docker Images
+
+# 设置触发条件：只要 push 到 main 分支就会自动执行
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'scraper/**'
+jobs:
+  build-and-push:       # 作业名称，可以随便起
+    runs-on: ubuntu-latest   # 指定 GitHub 提供的运行环境（Ubuntu）
+
+    steps:
+      # 第一步：拉取你的代码仓库
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 第二步：设置 Docker Buildx，支持多平台构建
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 第三步：登录到 Docker Hub，使用你在仓库 Secret 中配置的用户名和 token
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}   # 你的 Docker Hub 用户名
+          password: ${{ secrets.DOCKERHUB_TOKEN }}      # 你的 Docker Hub Token
+
+      # 以下是逐个服务的构建和推送逻辑：
+
+      # 构建并推送 backend 镜像
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend             # 指定 Dockerfile 所在路径
+          push: true                     # 自动推送到 Docker Hub
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-backend:latest
+          platforms: linux/arm64   #  打 arm64 镜像了
+
+      # 构建并推送 frontend 镜像
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-frontend:latest
+          platforms: linux/arm64
+          build-args: |
+            VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }} 
+      
+
+      # 构建并推送 scraper 镜像
+      - name: Build and push scraper image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./scraper
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-scraper:latest
+          platforms: linux/arm64   #  打 arm64 镜像了

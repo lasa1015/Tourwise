@@ -1,5 +1,5 @@
 const googleMapsConfig = {
-  googleMapsApiKey: 'AIzaSyBgHZSJy_nE-49i5Sjz1oCGgW5jct2PxVY',
+  googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   libraries: ['places'],
 };
 
