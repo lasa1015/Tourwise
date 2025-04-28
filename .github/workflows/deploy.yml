@@ -39,7 +39,7 @@ jobs:
           context: ./backend             # 指定 Dockerfile 所在路径
           push: true                     # 自动推送到 Docker Hub
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-backend:latest
-          platforms: linux/arm64   #  打 arm64 镜像了
+#          platforms: linux/arm64   #  打 arm64 镜像了
 
       # 构建并推送 frontend 镜像
       - name: Build and push frontend image
@@ -48,7 +48,7 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-frontend:latest
-          platforms: linux/arm64
+#          platforms: linux/arm64
           build-args: |
             REACT_APP_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}
       
@@ -60,4 +60,4 @@ jobs:
           context: ./scraper
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-scraper:latest
-          platforms: linux/arm64   #  打 arm64 镜像了
+#          platforms: linux/arm64   #  打 arm64 镜像了

@@ -9,7 +9,7 @@ services:
       - "8080:8080"
     networks:
       - tourwise-network
-    restart: always
+
     logging:
       driver: json-file
       options:
@@ -25,7 +25,7 @@ services:
       - ./scraper/.env.prod
     networks:
       - tourwise-network
-    restart: on-failure
+
     logging:
       driver: json-file
       options:
@@ -41,7 +41,6 @@ services:
       - backend
     networks:
       - tourwise-network
-    restart: on-failure
     logging:
       driver: json-file
       options:
