@@ -13,7 +13,6 @@ import java.util.List;
 
 
 // 专门给前端提供天气预报数据的接口。它不处理任何逻辑，只接收日期参数，然后转发给 DailyWeatherDataService。
-
 @RestController
 @RequestMapping("/api/weather")   //这个控制器的所有接口路径都以 /weather 开头
 public class DailyWeatherDataController {
@@ -25,7 +24,7 @@ public class DailyWeatherDataController {
         this.service = service;
     }
 
-    // 获取某一天的天气
+    // 获取某一天的天气!
     @GetMapping("/by_date/{date}")
     public List<DailyForecastData> getForecastByDate(@PathVariable String date) {
 

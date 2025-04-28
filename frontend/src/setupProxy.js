@@ -6,6 +6,8 @@ module.exports = app => {
   app.use(
     '/api',
     createProxyMiddleware({
+
+
       /** 一定换成 127.0.0.1，别再写 localhost */
       target: 'http://127.0.0.1:8080',
       changeOrigin: true,
