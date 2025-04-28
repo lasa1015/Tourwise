@@ -89,7 +89,7 @@ public class EventService {
     }
 
     // 定时任务,每 3 小时自动执行一次
-    @Scheduled(fixedRate = 10800000, initialDelay = 10800000)
+    @Scheduled(fixedRate = 10800000)
     @Transactional
     public void fetchAndSaveEvents() {
         logger.info("🗓️ [EventService] Starting event update process...");
