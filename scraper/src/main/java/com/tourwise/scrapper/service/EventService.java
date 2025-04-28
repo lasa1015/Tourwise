@@ -114,8 +114,8 @@ public class EventService {
                     List<EventData> newEvents = events.stream()
                             .filter(event -> !event.getIs_canceled())
                             .filter(event -> event.getName() != null && !event.getName().isEmpty())
-                            .filter(event -> event.getEvent_site_url() != null && !event.getEvent_site_url().isEmpty())
-                            .filter(event -> event.getImage_url() != null && !event.getImage_url().isEmpty())
+                            .filter(event -> event.getEventSiteUrl() != null && !event.getEventSiteUrl().isEmpty())
+                            .filter(event -> event.getImageUrl() != null && !event.getImageUrl().isEmpty())
                             .filter(event -> {
                                 LocalDateTime timeStart = convertToLocalDateTime(event.getTime_start());
                                 LocalDateTime timeEnd = event.getTime_end() != null ?
@@ -140,18 +140,18 @@ public class EventService {
 
                     for (EventData event : newEvents) {
                         boolean exists = eventRepository.existsEventByNameOrUrl(
-                                event.getName(), event.getEvent_site_url(), event.getImage_url()
+                                event.getName(), event.getEventSiteUrl(), event.getImageUrl()
                         );
 
                         if (exists) {
                             // 如果已存在，找到并更新
-                            EventData existingEvent = eventRepository.findByNameOrUrl(
-                                    event.getName(), event.getEvent_site_url(), event.getImage_url()
+                            EventData existingEvent = eventRepository.findByNameOrEventSiteUrlOrImageUrl(
+                                    event.getName(), event.getEventSiteUrl(), event.getImageUrl()
                             );
                             existingEvent.setDescription(event.getDescription());
                             existingEvent.setTime_start(event.getTime_start());
                             existingEvent.setTime_end(event.getTime_end());
-                            existingEvent.setImage_url(event.getImage_url());
+                            existingEvent.setImageUrl(event.getImageUrl());
                             existingEvent.setLatitude(event.getLatitude());
                             existingEvent.setLongitude(event.getLongitude());
                             existingEvent.setFetchTime(LocalDateTime.now());

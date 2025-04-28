@@ -1,0 +1,54 @@
+services:
+
+  backend:
+    image: ${BACKEND_IMAGE}
+    container_name: tourwise-backend
+    env_file:
+      - ./backend/.env.prod
+    ports:
+      - "8080:8080"
+    networks:
+      - tourwise-network
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scraper:
+    image: ${SCRAPER_IMAGE}
+    container_name: tourwise-scraper
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./scraper/.env.prod
+    networks:
+      - tourwise-network
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    image: ${FRONTEND_IMAGE}
+    container_name: tourwise-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - tourwise-network
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+networks:
+  tourwise-network:
+

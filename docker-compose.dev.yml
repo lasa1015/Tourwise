@@ -1,0 +1,63 @@
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tourwise-backend
+    env_file:
+      - ./backend/.env.dev-docker
+    ports:
+      - "8080:8080"
+    networks:
+      - tourwise-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  scraper:
+    build:
+      context: ./scraper
+      dockerfile: Dockerfile
+    container_name: tourwise-scraper
+    env_file:
+      - ./scraper/.env.dev
+    ports:
+      - "8081:8081"
+    networks:
+      - tourwise-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tourwise-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - tourwise-network
+    restart: on-failure
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  tourwise-network:

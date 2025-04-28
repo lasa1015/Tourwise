@@ -47,10 +47,10 @@ public class EventData {
     private String description;
 
     @Column(name = "event_site_url", length = 1000)
-    private String event_site_url;
+    private String eventSiteUrl;
 
     @Column(name = "image_url", length = 1000)
-    private String image_url;
+    private String imageUrl;
 
     @Column(name = "is_free")
     private Boolean is_free;

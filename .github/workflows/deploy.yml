@@ -50,7 +50,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-frontend:latest
           platforms: linux/arm64
           build-args: |
-            VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }} 
+            REACT_APP_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}
       
 
       # 构建并推送 scraper 镜像
