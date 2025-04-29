@@ -33,7 +33,7 @@ public class PredictionScheduler {
 
     private static final int BATCH_SAVE_SIZE = 500;
     private static final int BATCH_DAYS = 5;
-    private static final int SLEEP_TIME_MS = 60000; // 1 minute
+    private static final int SLEEP_TIME_MS = 6000; // 10s
 
     static {
         HARDCODED_BUSINESS_VALUES.put("MONDAY", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 63, 83, 92, 91, 80, 59, 34, 0, 0, 0, 0, 0, 0, 0));
@@ -104,7 +104,7 @@ public class PredictionScheduler {
                 flushBatch(buffer);
 
                 if (!batchEnd.isEqual(endDate)) {
-                    System.out.println("⏸️ Sleeping for 2 minutes before next batch...");
+                    System.out.println("⏸️ Sleeping for 10s before next batch...");
                     Thread.sleep(SLEEP_TIME_MS);
                 }
 
