@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.shaluo.tourwise.controller.AttractionController;
-import com.shaluo.tourwise.model.Attraction;
-import com.shaluo.tourwise.service.AttractionService;
+import com.tourwise.backend.controller.AttractionController;
+import com.tourwise.backend.model.Attraction;
+import com.tourwise.backend.service.AttractionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;

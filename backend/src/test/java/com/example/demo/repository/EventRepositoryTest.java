@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
-import com.shaluo.tourwise.model.Event;
-import com.shaluo.tourwise.repository.EventRepository;
+import com.tourwise.backend.model.Event;
+import com.tourwise.backend.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
