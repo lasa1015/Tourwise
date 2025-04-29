@@ -9,7 +9,7 @@ services:
       - "8080:8080"
     networks:
       - tourwise-network
-
+    mem_limit: 512m
     logging:
       driver: json-file
       options:

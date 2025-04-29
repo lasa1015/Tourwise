@@ -15,12 +15,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.TextStyle;
 import java.util.*;
-
-
-//根据 (taxiZone, datetime) 这两个字段一起当作“复合唯一键”，判断数据是否存在。
-//存在就更新。不存在就插入。
 
 @Service
 public class PredictionScheduler {
@@ -35,6 +30,10 @@ public class PredictionScheduler {
 
     @Getter
     private static Map<Integer, Map<String, Map<String, Float>>> savedResult = new TreeMap<>();
+
+    private static final int BATCH_SAVE_SIZE = 500;
+    private static final int BATCH_DAYS = 5;
+    private static final int SLEEP_TIME_MS = 120000; // 2 minutes
 
     static {
         HARDCODED_BUSINESS_VALUES.put("MONDAY", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 63, 83, 92, 91, 80, 59, 34, 0, 0, 0, 0, 0, 0, 0));
@@ -54,40 +53,57 @@ public class PredictionScheduler {
         LocalDate endDate = startDate.plusDays(29);
 
         Map<Integer, Map<String, Map<String, Float>>> result = new TreeMap<>();
+        List<BusynessPrediction> buffer = new ArrayList<>();
 
         try {
             List<Integer> taxiZones = readTaxiZonesFromCSV();
 
             System.out.println("✅ Loaded " + taxiZones.size() + " taxi zones from CSV.");
 
-            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            LocalDate current = startDate;
+            while (!current.isAfter(endDate)) {
+                LocalDate batchEnd = current.plusDays(BATCH_DAYS - 1);
+                if (batchEnd.isAfter(endDate)) batchEnd = endDate;
 
-                String dateKey = date.toString();
+                System.out.println("🚀 Processing batch: " + current + " to " + batchEnd);
 
-                for (int taxiZone : taxiZones) {
-                    Map<String, Map<String, Float>> dateMap = result.computeIfAbsent(taxiZone, k -> new TreeMap<>());
-                    Map<String, Float> hourlyPredictions = dateMap.computeIfAbsent(dateKey, k -> new TreeMap<>());
+                for (LocalDate date = current; !date.isAfter(batchEnd); date = date.plusDays(1)) {
+                    String dateKey = date.toString();
 
-                    for (int hour = 0; hour < 24; hour++) {
-                        LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(hour, 0));
-                        String timeKey = dateTime.toString();
+                    for (int taxiZone : taxiZones) {
+                        Map<String, Map<String, Float>> dateMap = result.computeIfAbsent(taxiZone, k -> new TreeMap<>());
+                        Map<String, Float> hourlyPredictions = dateMap.computeIfAbsent(dateKey, k -> new TreeMap<>());
 
-                        try {
-                            float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
-                            hourlyPredictions.put(timeKey, prediction);
+                        for (int hour = 0; hour < 24; hour++) {
+                            LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.of(hour, 0));
+                            String timeKey = dateTime.toString();
 
-                            saveOrUpdatePrediction(taxiZone, dateTime, prediction);
+                            try {
+                                float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
+                                hourlyPredictions.put(timeKey, prediction);
+                                buffer.add(buildPredictionEntity(taxiZone, dateTime, prediction));
+                            } catch (IllegalArgumentException | XGBoostError e) {
+                                hourlyPredictions.put(timeKey, -1.0f);
+                                buffer.add(buildPredictionEntity(taxiZone, dateTime, -1.0f));
+                                System.err.println("❌ Prediction error for zone " + taxiZone + " at " + timeKey);
+                            }
 
-                        } catch (IllegalArgumentException | XGBoostError e) {
-                            hourlyPredictions.put(timeKey, -1.0f);
-                            saveOrUpdatePrediction(taxiZone, dateTime, -1.0f);
-                            System.err.println("❌ Prediction error for zone " + taxiZone + " at " + timeKey);
+                            if (buffer.size() >= BATCH_SAVE_SIZE) {
+                                flushBatch(buffer);
+                            }
                         }
                     }
-                    System.out.println("✅ TaxiZone " + taxiZone + " predictions saved to database.");
+                    addHardcodedBusyness(result, date, dateKey, buffer);
                 }
 
-                addHardcodedBusyness(result, date, dateKey);
+                flushBatch(buffer);
+
+                if (!batchEnd.isEqual(endDate)) {
+                    System.out.println("⏸️ Sleeping for 2 minutes before next batch...");
+                    Thread.sleep(SLEEP_TIME_MS);
+                }
+
+                current = batchEnd.plusDays(1);
             }
 
             this.savedResult = result;
@@ -99,8 +115,8 @@ public class PredictionScheduler {
         }
     }
 
-    private void addHardcodedBusyness(Map<Integer, Map<String, Map<String, Float>>> result, LocalDate date, String dateKey) {
-        String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase();
+    private void addHardcodedBusyness(Map<Integer, Map<String, Map<String, Float>>> result, LocalDate date, String dateKey, List<BusynessPrediction> buffer) {
+        String dayOfWeek = date.getDayOfWeek().toString();
         List<Integer> hourlyBusyness = HARDCODED_BUSINESS_VALUES.get(dayOfWeek);
 
         if (hourlyBusyness != null) {
@@ -113,8 +129,11 @@ public class PredictionScheduler {
                     String timeKey = dateTime.toString();
                     float value = hourlyBusyness.get(hour).floatValue();
                     hourlyPredictions.put(timeKey, value);
+                    buffer.add(buildPredictionEntity(zone, dateTime, value));
 
-                    saveOrUpdatePrediction(zone, dateTime, value);
+                    if (buffer.size() >= BATCH_SAVE_SIZE) {
+                        flushBatch(buffer);
+                    }
                 }
             }
         }
@@ -132,19 +151,19 @@ public class PredictionScheduler {
         return taxiZones;
     }
 
-    private void saveOrUpdatePrediction(int taxiZone, LocalDateTime datetime, float busyness) {
-        Optional<BusynessPrediction> existing = busynessPredictionRepository.findByTaxiZoneAndDatetime(taxiZone, datetime);
-        if (existing.isPresent()) {
-            BusynessPrediction prediction = existing.get();
-            prediction.setBusyness(busyness);
-            prediction.setUpdatedAt(LocalDateTime.now());
-            busynessPredictionRepository.save(prediction);
-        } else {
-            BusynessPrediction prediction = new BusynessPrediction();
-            prediction.setTaxiZone(taxiZone);
-            prediction.setDatetime(datetime);
-            prediction.setBusyness(busyness);
-            busynessPredictionRepository.save(prediction);
+    private BusynessPrediction buildPredictionEntity(int taxiZone, LocalDateTime datetime, float busyness) {
+        BusynessPrediction prediction = new BusynessPrediction();
+        prediction.setTaxiZone(taxiZone);
+        prediction.setDatetime(datetime);
+        prediction.setBusyness(busyness);
+        prediction.setUpdatedAt(LocalDateTime.now());
+        return prediction;
+    }
+
+    private void flushBatch(List<BusynessPrediction> buffer) {
+        if (!buffer.isEmpty()) {
+            busynessPredictionRepository.saveAll(buffer);
+            buffer.clear();
         }
     }
 }
