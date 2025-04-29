@@ -38,7 +38,7 @@ public class PredictionScheduler {
         // Hardcoded business values for days of the week
     }
 
-    @Scheduled(initialDelay = 1000, fixedRate = 3600000)
+    @Scheduled(fixedRate = 18000000)
     public void calculateAndSaveBusyness() {
         System.out.println("✅ [Scheduler] Start running prediction scheduler...");
 
@@ -75,7 +75,7 @@ public class PredictionScheduler {
                                 float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
                                 hourlyPredictions.put(timeKey, prediction);
                                 buffer.add(buildPredictionEntity(taxiZone, dateTime, prediction));
-                                System.out.println("✅ Prediction added for zone " + taxiZone + " at " + timeKey + ": " + prediction);
+//                                System.out.println("✅ Prediction added for zone " + taxiZone + " at " + timeKey + ": " + prediction);
                             } catch (IllegalArgumentException e) {
                                 System.err.println("⚠️ Taxi zone not found: " + taxiZone + " at " + dateTime);
                                 hourlyPredictions.put(timeKey, -1.0f);
@@ -173,12 +173,14 @@ public class PredictionScheduler {
                 existingRecord.setBusyness(prediction.getBusyness());
                 existingRecord.setUpdatedAt(LocalDateTime.now());
                 busynessPredictionRepository.save(existingRecord);
-                System.out.println("🔄 Updated existing record for zone " + prediction.getTaxiZone() + " at " + prediction.getDatetime());
             } else {
                 busynessPredictionRepository.save(prediction);
                 System.out.println("➕ Saved new record for zone " + prediction.getTaxiZone() + " at " + prediction.getDatetime());
             }
         }
+
+        System.out.println("💾 Flushed " + buffer.size() + " predictions in this batch.");
         buffer.clear();
     }
+
 }
