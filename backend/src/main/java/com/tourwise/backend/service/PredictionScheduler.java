@@ -30,9 +30,9 @@ public class PredictionScheduler {
     @Getter
     private static Map<Integer, Map<String, Map<String, Float>>> savedResult = new TreeMap<>();
 
-    private static final int BATCH_SAVE_SIZE = 500;
+    private static final int BATCH_SAVE_SIZE = 1000;
     private static final int BATCH_DAYS = 5;
-    private static final int SLEEP_TIME_MS = 6000; // 10s
+    private static final int SLEEP_TIME_MS = 600; // 1s
 
     static {
         // Hardcoded business values for days of the week
