@@ -33,7 +33,7 @@ public class PredictionScheduler {
 
     private static final int BATCH_SAVE_SIZE = 500;
     private static final int BATCH_DAYS = 5;
-    private static final int SLEEP_TIME_MS = 120000; // 2 minutes
+    private static final int SLEEP_TIME_MS = 60000; // 1 minute
 
     static {
         HARDCODED_BUSINESS_VALUES.put("MONDAY", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 37, 63, 83, 92, 91, 80, 59, 34, 0, 0, 0, 0, 0, 0, 0));
@@ -82,10 +82,15 @@ public class PredictionScheduler {
                                 float prediction = predictionService.predictByTaxiZone(taxiZone, dateTime);
                                 hourlyPredictions.put(timeKey, prediction);
                                 buffer.add(buildPredictionEntity(taxiZone, dateTime, prediction));
-                            } catch (IllegalArgumentException | XGBoostError e) {
+                            } catch (IllegalArgumentException e) {
+                                System.err.println("⚠️ Taxi zone not found: " + taxiZone + " at " + dateTime);
                                 hourlyPredictions.put(timeKey, -1.0f);
                                 buffer.add(buildPredictionEntity(taxiZone, dateTime, -1.0f));
+                            } catch (XGBoostError e) {
                                 System.err.println("❌ Prediction error for zone " + taxiZone + " at " + timeKey);
+                                e.printStackTrace();
+                                hourlyPredictions.put(timeKey, -1.0f);
+                                buffer.add(buildPredictionEntity(taxiZone, dateTime, -1.0f));
                             }
 
                             if (buffer.size() >= BATCH_SAVE_SIZE) {
@@ -177,5 +182,4 @@ public class PredictionScheduler {
         }
         buffer.clear();
     }
-
 }
