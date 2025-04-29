@@ -161,9 +161,21 @@ public class PredictionScheduler {
     }
 
     private void flushBatch(List<BusynessPrediction> buffer) {
-        if (!buffer.isEmpty()) {
-            busynessPredictionRepository.saveAll(buffer);
-            buffer.clear();
+        for (BusynessPrediction prediction : buffer) {
+            Optional<BusynessPrediction> existing = busynessPredictionRepository.findByTaxiZoneAndDatetime(
+                    prediction.getTaxiZone(), prediction.getDatetime()
+            );
+
+            if (existing.isPresent()) {
+                BusynessPrediction existingRecord = existing.get();
+                existingRecord.setBusyness(prediction.getBusyness());
+                existingRecord.setUpdatedAt(LocalDateTime.now());
+                busynessPredictionRepository.save(existingRecord);
+            } else {
+                busynessPredictionRepository.save(prediction);
+            }
         }
+        buffer.clear();
     }
+
 }
