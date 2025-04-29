@@ -1,7 +1,7 @@
 # 这个工作流程的名字，显示在 GitHub Actions 页面里
 name: Tourwise - Build and Push Docker Images
 
-# 设置触发条件：只要 push 到 main 分支就会自动执行
+# 设置触发条件：只要 push 到 master 分支，并且 frontend / backend / scraper 目录变化，就会自动执行
 on:
   push:
     branches:
@@ -10,6 +10,7 @@ on:
       - 'frontend/**'
       - 'backend/**'
       - 'scraper/**'
+
 jobs:
   build-and-push:       # 作业名称，可以随便起
     runs-on: ubuntu-latest   # 指定 GitHub 提供的运行环境（Ubuntu）
@@ -30,34 +31,49 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}   # 你的 Docker Hub 用户名
           password: ${{ secrets.DOCKERHUB_TOKEN }}      # 你的 Docker Hub Token
 
-      # 以下是逐个服务的构建和推送逻辑：
+      # 第四步：检测每个目录是否有变化
+      - name: Check changed files
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+            scraper:
+              - 'scraper/**'
 
-      # 构建并推送 backend 镜像
+      # 以下是逐个服务的构建和推送逻辑，只在对应目录变化时才构建：
+
+      # 构建并推送 backend 镜像（只有 backend 目录变化时执行）
       - name: Build and push backend image
+        if: steps.changes.outputs.backend == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./backend             # 指定 Dockerfile 所在路径
           push: true                     # 自动推送到 Docker Hub
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-backend:latest
-#          platforms: linux/arm64   #  打 arm64 镜像了
+      #          platforms: linux/arm64   #  如果需要打 arm64 镜像，取消这行注释
 
-      # 构建并推送 frontend 镜像
+      # 构建并推送 frontend 镜像（只有 frontend 目录变化时执行）
       - name: Build and push frontend image
+        if: steps.changes.outputs.frontend == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-frontend:latest
-#          platforms: linux/arm64
+          #          platforms: linux/arm64
           build-args: |
             REACT_APP_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}
-      
 
-      # 构建并推送 scraper 镜像
+      # 构建并推送 scraper 镜像（只有 scraper 目录变化时执行）
       - name: Build and push scraper image
+        if: steps.changes.outputs.scraper == 'true'
         uses: docker/build-push-action@v5
         with:
           context: ./scraper
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tourwise-scraper:latest
-#          platforms: linux/arm64   #  打 arm64 镜像了
+#          platforms: linux/arm64   #  如果需要打 arm64 镜像，取消这行注释
