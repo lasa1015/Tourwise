@@ -26,5 +26,5 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-Xmx600m", "-Xms300m", "-XX:+UseSerialGC", "-jar", "app.jar"]
+CMD ["java", "-Xmx500m", "-Xms250m", "-XX:+UseSerialGC", "-jar", "app.jar"]
 
