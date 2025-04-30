@@ -108,7 +108,7 @@ Users can collapse the sidebar to view all attractions or events directly on the
 
 ![map](docs/images/map-1746020102243-12.png)
 
-#### **● **Add Attractions and Events to Your Plan
+#### ● Add Attractions and Events to Your Plan
 
 Users can add their favorite attractions and events to a personal list. Items can be removed or cleared at any time.
 
@@ -140,7 +140,7 @@ In the user profile page, users can update their password and access previously 
 
 The application is fully responsive and offers an optimal experience across all devices, including desktop, tablet (both orientations), and mobile.
 
-![responsive](docs/images/responsive.png)
+![responsive-new](docs/images/responsive-new.png)
 
 ------
 
