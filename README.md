@@ -20,10 +20,7 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
 
 - **UI Design**:  Figma, Photoshop
   
-- **Frontend**:  
-  - React + TypeScript  
-  
-  - Libraries: Google Maps Platform, Google Charts, Google Fonts, Material UI (MUI), Ant Design
+- **Frontend**:  React + TypeScript , Google Maps Platform, Google Charts, Google Fonts, Material UI, Ant Design
   
 - **Backend**:  Spring Boot (Java), RESTful APIs
 
@@ -35,11 +32,7 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
 
 - **Build Tool**:  Gradle (used in backend and scraper)
 
-- **Deployment & Infrastructure**:  
-  - Docker, Docker Compose, Nginx  
-  - CI/CD: GitHub Actions  
-  - Hosting: Hetzner Cloud (CX22) 
-  - Domain & DNS: Namecheap
+- **Deployment & Infrastructure**:  Docker, Docker Compose, Nginx, GitHub Actions,  Hetzner Cloud (CX22), Namecheap
 
 
 ------
@@ -64,7 +57,7 @@ In addition to the services, the platform relies on a centralized database compo
 
 ### Key Features
 
-#### **● **Plan Trips in Manhattan, NYC
+#### ● Plan Trips in Manhattan, NYC
 
 Users can plan their travel within the next 30 days in Manhattan, New York City. On the landing page, users can select a start and end date for their trip.
 
@@ -72,7 +65,7 @@ Users can plan their travel within the next 30 days in Manhattan, New York City.
 
 
 
-#### **● Explore Popular Attractions in Manhattan**
+#### ● Explore Popular Attractions in Manhattan
 
 Browse nearly 200 well-known attractions in Manhattan. 
 
@@ -92,7 +85,7 @@ Clicking an attraction card reveals additional details.
 
 
 
-#### ●  **View Upcoming Events in Manhattan**
+#### ●  View Upcoming Events in Manhattan
 
 See events happening in the next 30 days. Events can be searched, filtered by type or whether they are free, and expanded to view full details.
 
@@ -100,7 +93,7 @@ See events happening in the next 30 days. Events can be searched, filtered by ty
 
 
 
-#### **● Interactive Map View**
+#### ● Interactive Map View
 
 Users can collapse the sidebar to view all attractions or events directly on the map, along with Dublin's public bike stations.
 
@@ -108,7 +101,7 @@ Users can collapse the sidebar to view all attractions or events directly on the
 
 
 
-#### **● **Add Attractions and Events to Your Plan****
+#### **● **Add Attractions and Events to Your Plan
 
 Users can add their favorite attractions and events to a personal list. Items can be removed or cleared at any time.
 
@@ -116,7 +109,7 @@ Users can add their favorite attractions and events to a personal list. Items ca
 
 
 
-#### **● **Generate Optimized Itinerary Using ML-Based Routing Algorithms
+#### ● Generate Optimized Itinerary Using ML-Based Routing Algorithms
 
 After clicking "Generate Plan," the system creates a personalized travel itinerary using intelligent routing algorithms that are designed based on machine learning models. These models predict the future busyness levels of different taxi zones, enabling the itinerary to optimize routes and timings to avoid congestion. Users can inspect predicted congestion levels across taxi zones and interact with charts for detailed hourly insights.
 
@@ -124,7 +117,7 @@ After clicking "Generate Plan," the system creates a personalized travel itinera
 
 
 
-#### **● Save Your Travel Plans**
+#### ● Save Your Travel Plans
 
 Users can register and log in to persistently save their travel plans.
 
@@ -132,7 +125,7 @@ Users can register and log in to persistently save their travel plans.
 
 
 
-#### **●  **User Profile Management
+#### ●  User Profile Management
 
 In the user profile page, users can update their password and access previously saved travel plans.
 
@@ -142,7 +135,7 @@ In the user profile page, users can update their password and access previously 
 
 
 
-#### **● **Responsive Design for All Devices****
+#### **● **Responsive Design for All Devices
 
 The application is fully responsive and offers an optimal experience across all devices, including desktop, tablet (both orientations), and mobile.
 
