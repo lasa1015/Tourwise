@@ -148,7 +148,7 @@ const Schedule: React.FC = () => {
     await fetchBusynessData(moment(startTime).format("YYYY-MM-DD"));
   };
 
-  /* ---------- 保存按钮逻辑（精简） ---------- */
+
   const triggerAvatarClick = () => {
     const btn = document.getElementById("avatarButton");
     if (btn) btn.click();

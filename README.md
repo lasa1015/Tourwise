@@ -40,16 +40,24 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
 ![image-20250429204046910](docs/images/system_arch.png)
 
 - **Frontend Service** (React): 
+
+  A client-facing web application built with React and TypeScript. It provides an interactive interface for users to view attraction and event details, select preferred dates, and generate personalized itineraries. It communicates with the backend via REST APIs and dynamically renders prediction data and schedules using Google Charts and other UI components.
+
 - **Backend Service** (Spring Boot): 
+
+  Acts as the main business logic layer. It handles user authentication, itinerary generation, and serves as the central API gateway for data access and prediction services. It connects to the AWS RDS PostgreSQL database to fetch weather and event data and integrates with a machine learning model to predict busyness levels for taxi zones. It also includes a custom scheduling algorithm that intelligently assigns activities to available time slots based on busyness, user preferences, and real-time data.
+
 - **Scraper Service** (Spring Boot): 
 
-Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance
+  A background service dedicated to data collection. It periodically pulls event information from the Yelp API and weather forecasts from OpenWeather, filters and transforms the raw data, and stores the results in a centralized AWS RDS PostgreSQL database. It also includes polygon-based geofiltering logic to restrict data collection to the Manhattan area.
+
+Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance.
 
 In addition to the services, the platform relies on a centralized database component:
 
-- **AWS RDS MySQL**: Provides reliable and scalable persistent storage for all application data.
+- **AWS RDS PostgreSQL **:
 
-  
+  Provides reliable and scalable persistent storage for all application data, including user accounts, itineraries, weather forecasts, event listings, and machine learning prediction results. A detailed schema is documented in `docs/schema/schema.md`.
 
 ------
 

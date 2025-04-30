@@ -11,6 +11,8 @@ logs/
 venv/
 dist/
 *.iodraw
+.sql
+
 
 
 
