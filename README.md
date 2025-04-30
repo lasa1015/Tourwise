@@ -80,71 +80,59 @@ In addition to the services, the platform relies on a centralized database compo
 
 Users can plan their travel within the next 30 days in Manhattan, New York City. On the landing page, users can select a start and end date for their trip.
 
-![langding](docs/images/border/landing2.png)
+![langding](docs/images/border/landing.png)
 
 #### ● Explore Popular Attractions in Manhattan
 
 Browse nearly 200 well-known attractions in Manhattan. 
 
-![attractions-shadow](docs/images/attractions-shadow.png)
-
-
+![attractions](docs/images/attractions-1746019956936-4.png)
 
 Users can search for attractions via the sidebar, apply category filters, or sort by popularity, rating, and whether the attraction is free.
 
-![filter-shadow](docs/images/filter-shadow.png)
+![filter](docs/images/filter-1746019989830-6.png)
 
 Clicking an attraction card reveals additional details.
 
-![details-shadow](docs/images/details-shadow.png)
+![attraction_details](docs/images/attraction_details-1746020021641-8.png)
 
 #### ●  View Upcoming Events in Manhattan
 
 See events happening in the next 30 days. Events can be searched, filtered by type or whether they are free, and expanded to view full details.
 
-<img src="docs/images/events.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![events](docs/images/events-1746020071776-10.png)
 
 #### ● Interactive Map View
 
 Users can collapse the sidebar to view all attractions or events directly on the map, along with Dublin's public bike stations.
 
-<img src="docs/images/map.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![map](docs/images/map-1746020102243-12.png)
 
 #### **● **Add Attractions and Events to Your Plan
 
 Users can add their favorite attractions and events to a personal list. Items can be removed or cleared at any time.
 
-<img src="docs/images/list.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![list](docs/images/list-1746020202725-17.png)
 
 #### ● Generate Optimized Itinerary Using ML-Based Routing Algorithms
 
 After clicking "Generate Plan," the system creates a personalized travel itinerary using intelligent routing algorithms that are designed based on machine learning models. These models predict the future busyness levels of different taxi zones, enabling the itinerary to optimize routes and timings to avoid congestion. Users can inspect predicted congestion levels across taxi zones and interact with charts for detailed hourly insights.
 
-<img src="docs/images/schedule.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![schedule](docs/images/schedule-1746020212020-19.png)
 
 #### ● Save Your Travel Plans
 
 Users can register and log in to persistently save their travel plans.
 
-<img src="docs/images/signup.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![signup](docs/images/signup.png)
 
 #### ●  User Profile Management
 
 In the user profile page, users can update their password and access previously saved travel plans.
 
-<img src="docs/images/profile.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
+![profile](docs/images/profile-1746020322447-21.png)
 
-<img src="docs/images/myplans.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
+![myplans](docs/images/myplans-1746020328211-23.png)
 
 
 
@@ -152,7 +140,7 @@ In the user profile page, users can update their password and access previously 
 
 The application is fully responsive and offers an optimal experience across all devices, including desktop, tablet (both orientations), and mobile.
 
-![image-20250429184349487](docs/images/responsive.png)
+![responsive](docs/images/responsive.png)
 
 ------
 
