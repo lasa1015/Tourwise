@@ -10,6 +10,12 @@ import About from './pages/about/About';
 import Dashboard from './pages/user/User';
 import './App.css';
 
+// Temporarily disable console log, warn and error
+console.log = () => {};
+console.warn = () => {};
+console.error = () => {};
+
+
 interface AppProps {
   selectedDates: [moment.Moment | null, moment.Moment | null] | null;
   onDateChange: (dates: [moment.Moment | null, moment.Moment | null] | null) => void;
