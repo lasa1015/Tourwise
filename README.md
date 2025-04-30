@@ -8,9 +8,22 @@
 
 ###  Project Overview
 
-The Smart Tourist Guide for New York City is an innovative plan designed to enhance the travel experience for tourists by providing real-time information about Points of Interest (POI), focusing on recommending times to visit when these locations are least crowded. This project leverages multiple datasets and advanced technologies to deliver personalized, data-driven recommendations, ensuring tourists can explore the city efficiently and comfortably.
+Tourwise is a smart tourist guide for New York City that helps visitors explore the city efficiently by recommending optimal times to visit Points of Interest (POIs), based on real-time and historical data.
 
+By integrating datasets such as taxi trips, subway usage, and event schedules, the system builds a comprehensive understanding of urban crowd movement. It uses a machine learning model to predict crowd levels and generate a Busyness Index, allowing users to avoid peak times. The itinerary algorithm then creates personalized travel plans by balancing factors such as attraction hours, event timing, travel distance, and predicted crowd levels — ensuring each user's trip is both convenient and smooth.
 
+This project was originally developed in an academic environment by a team of six members, each responsible for a specific module:
+
+- **Coordination Lead**: Mustafa Tugrul Yilmaz
+- **Data Lead**: Nathan Power
+- **Backend Code Lead**: Boyu Wang
+- **Frontend Code Lead**: Sha Luo
+- **Customer Lead**: Maxim Zack Istasse
+- **Maintenance Lead**: Jorge Durán González
+
+Initially deployed on a private monolithic server, the system was later taken offline.
+
+The current version was restructured and redeployed by **Sha Luo**, utilizing **AWS RDS (PostgreSQL)** for persistent storage and a **Hetzner server** for hosting. The deployment is containerized with **Docker** and automated through **GitHub Actions** for continuous integration and delivery (CI/CD). This update also introduces backend improvements such as persisting prediction results to the database—reducing reliance on in-memory storage and enhancing data availability. Several frontend bugs were fixed to improve stability and user experience.
 
 ------
 
@@ -22,7 +35,7 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
   
 - **Backend**:  Spring Boot (Java), RESTful APIs
 
-- **Scraper**:  Spring Boot microservice (Java)
+- **Scraper**:  Spring Boot (Java)
 
 - **Database**: AWS RDS (PostgreSQL 17.4)
 
@@ -39,7 +52,7 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
 
 ![image-20250429204046910](docs/images/system_arch.png)
 
-- **Frontend Service** (React): 
+- **Frontend Service** (React + Nginx): 
 
   A client-facing web application built with React and TypeScript. It provides an interactive interface for users to view attraction and event details, select preferred dates, and generate personalized itineraries. It communicates with the backend via REST APIs and dynamically renders prediction data and schedules using Google Charts and other UI components.
 
@@ -57,7 +70,7 @@ In addition to the services, the platform relies on a centralized database compo
 
 - **AWS RDS PostgreSQL **:
 
-  Provides reliable and scalable persistent storage for all application data, including user accounts, itineraries, weather forecasts, event listings, and machine learning prediction results. A detailed schema is documented in `docs/schema/schema.md`.
+  Provides reliable and scalable persistent storage for all application data, including user accounts, itineraries, weather forecasts, event listings, and machine learning prediction results. A detailed schema is documented in `docs/schema.md`.
 
 ------
 
@@ -149,3 +162,6 @@ The application is fully responsive and offers an optimal experience across all 
 
 ------
 
+### License
+
+This project is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.

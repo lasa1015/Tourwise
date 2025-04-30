@@ -43,3 +43,4 @@ Thumbs.db
 
 dist/
 /backend/.env.prod
+/docs/dump-tourwise_db-202504301154.sql

@@ -232,32 +232,58 @@ const Schedule: React.FC = () => {
           </Box>
 
           {/* 日期按钮 + 保存 */}
-          <Stack direction="row" justifyContent="space-between" mb={3}>
-            <Stack direction="row" spacing={1}>
-              {Object.keys(planData).map((date) => (
-                <Button
-                  key={date}
-                  onClick={() => handleDateChange(date)}
+          <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" spacing={1} mb={3}>
+
+            {Object.keys(planData).map((date) => (
+              <Button
+                key={date}
+                onClick={() => handleDateChange(date)}
+                style={{
+                  backgroundColor: date === currentDate ? "orange" : "#f8f8f8",
+                  color: date === currentDate ? "#fff" : "#888",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                sx={{
+                  minWidth: { xs: "43px", sm: "55px", md: "60px" },
+                  minHeight: { xs: "40px", sm: "60px", md: "65px" },
+                  padding: { xs: "10px 8px", sm: "8px 10px", md: "8px 16px" },
+                  borderRadius: { xs: "12px", sm: "18px", md: "20px" },
+                }}
+              >
+                <Typography
+                  variant="caption"
                   style={{
-                    backgroundColor: date === currentDate ? "orange" : "#f8f8f8",
-                    color: date === currentDate ? "#fff" : "#888",
-                  }}
-                  sx={{
-                    minWidth: { xs: 43, sm: 55, md: 60 },
-                    minHeight: { xs: 40, sm: 60, md: 65 },
-                    borderRadius: { xs: 12, sm: 18, md: 20 },
+                    fontWeight: "normal",
+                    fontFamily: "Lexend",
+                    lineHeight: 1,
                   }}
                 >
-                  <Typography variant="caption" sx={{ fontFamily: "Lexend", lineHeight: 1 }}>
-                    {formatDayOfWeek(date)}
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontFamily: "Lexend", lineHeight: 1, fontSize: { xs: "1.3em", sm: "1.4em", md: "1.5em" } }}>
-                    {moment(date).format("DD")}
-                  </Typography>
-                </Button>
-              ))}
-            </Stack>
+                  {formatDayOfWeek(date)}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  style={{
+                    fontWeight: 400,
+                    fontFamily: "Lexend",
+                    lineHeight: 1,
+                  }}
+                  sx={{ fontSize: { xs: "1.3em", sm: "1.4em", md: "1.5em" } }}
+                >
+                  {moment(date).format("DD")}
+                </Typography>
+              </Button>
+            ))}
+            
+                   
+          </Stack>
+
             <SaveButton isLoggedIn={isLoggedIn} handleSaveClick={handleSaveClick} />
+          
+          
           </Stack>
 
           {/* 行程卡片列表 */}
