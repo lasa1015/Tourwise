@@ -80,7 +80,7 @@ In addition to the services, the platform relies on a centralized database compo
 
 Users can plan their travel within the next 30 days in Manhattan, New York City. On the landing page, users can select a start and end date for their trip.
 
-![langding](docs/images/shadow/langding.png)
+![langding](docs/images/border/landing.png)
 
 #### ● Explore Popular Attractions in Manhattan
 
