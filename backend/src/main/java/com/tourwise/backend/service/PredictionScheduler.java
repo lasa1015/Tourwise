@@ -38,7 +38,7 @@ public class PredictionScheduler {
         // Hardcoded business values for days of the week
     }
 
-//    @Scheduled(fixedRate = 18000000)
+    @Scheduled(fixedRate = 18000000)
     public void calculateAndSaveBusyness() {
         System.out.println("✅ [Scheduler] Start running prediction scheduler...");
 
