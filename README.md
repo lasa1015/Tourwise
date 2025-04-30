@@ -68,7 +68,7 @@ Each service runs in its own Docker container, orchestrated with Docker Compose 
 
 In addition to the services, the platform relies on a centralized database component:
 
-- **AWS RDS PostgreSQL **:
+- AWS RDS PostgreSQL :
 
   Provides reliable and scalable persistent storage for all application data, including user accounts, itineraries, weather forecasts, event listings, and machine learning prediction results. A detailed schema is documented in `docs/schema.md`.
 
