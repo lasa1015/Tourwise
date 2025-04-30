@@ -21,7 +21,7 @@ This project was originally developed in an academic environment by a team of si
 - **Customer Lead**: Maxim Zack Istasse
 - **Maintenance Lead**: Jorge Durán González
 
-Initially deployed on a private monolithic server, the system was later taken offline.
+Initially deployed on a private monolithic server, the system was later taken offline after assessment.
 
 The current version was restructured and redeployed by **Sha Luo**, utilizing **AWS RDS (PostgreSQL)** for persistent storage and a **Hetzner server** for hosting. The deployment is containerized with **Docker** and automated through **GitHub Actions** for continuous integration and delivery (CI/CD). This update also introduces backend improvements such as persisting prediction results to the database—reducing reliance on in-memory storage and enhancing data availability. Several frontend bugs were fixed to improve stability and user experience.
 
@@ -50,7 +50,7 @@ The current version was restructured and redeployed by **Sha Luo**, utilizing **
 
 ###  System Architecture
 
-![image-20250429204046910](docs/images/system_arch.png)
+![image-20250430145625694](docs/images/image-20250430145625694.png)
 
 - **Frontend Service** (React + Nginx): 
 
