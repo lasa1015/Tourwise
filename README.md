@@ -80,29 +80,23 @@ In addition to the services, the platform relies on a centralized database compo
 
 Users can plan their travel within the next 30 days in Manhattan, New York City. On the landing page, users can select a start and end date for their trip.
 
-<img src="docs/images/landing2.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![landing2-shadow](docs/images/landing2-shadow.png)
 
 #### ● Explore Popular Attractions in Manhattan
 
 Browse nearly 200 well-known attractions in Manhattan. 
 
-<img src="docs/images/attractions.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
+![attractions-shadow](docs/images/attractions-shadow.png)
 
 
 
 Users can search for attractions via the sidebar, apply category filters, or sort by popularity, rating, and whether the attraction is free.
 
-<img src="docs/images/filter.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![filter-shadow](docs/images/filter-shadow.png)
 
 Clicking an attraction card reveals additional details.
 
-<img src="docs/images/attraction_details.png" alt="Image with shadow" style="box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); border: none;">
-
-
+![details-shadow](docs/images/details-shadow.png)
 
 #### ●  View Upcoming Events in Manhattan
 
@@ -154,7 +148,7 @@ In the user profile page, users can update their password and access previously 
 
 
 
-#### **● **Responsive Design for All Devices
+#### ● Responsive Design for All Devices
 
 The application is fully responsive and offers an optimal experience across all devices, including desktop, tablet (both orientations), and mobile.
 
