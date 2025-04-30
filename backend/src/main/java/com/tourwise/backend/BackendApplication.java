@@ -19,6 +19,7 @@ public class BackendApplication {
             // 如果系统变量没有，说明是本地开发，需要手动加载 .env 文件
             Dotenv dotenv = Dotenv.configure()
                     .directory("./backend") // 指定本地 .env 文件所在目录
+                    .filename(".env.dev-local")
                     .load();
 
             // 将变量设置到系统属性中，Spring Boot 才能识别 ${}

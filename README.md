@@ -1,7 +1,5 @@
 ## Tourwise - Smart Tourist Guide for New York City 
 
-
-
 ### Live Demo
 
 [http://tourwise.site](http://tourwise.site)
@@ -39,7 +37,7 @@ The Smart Tourist Guide for New York City is an innovative plan designed to enha
 
 ###  System Architecture
 
-![image-20250429204046910](docs/images/image-20250429204046910.png)
+![image-20250429204046910](docs/images/system_arch.png)
 
 - **Frontend Service** (React): 
 - **Backend Service** (Spring Boot): 

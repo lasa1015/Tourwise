@@ -188,7 +188,7 @@ export const ListProvider: React.FC<ListProviderProps> = ({ children }) => {
   // New function to clear plan data in context
   const clearPlanData = () => {
     dispatch({ type: "CLEAR_PLAN_DATA" });
-    navigate("/spots");
+    // navigate("/spots");
   };
 
   const addItemWithDateCheck = (
