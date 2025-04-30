@@ -134,13 +134,11 @@ In the user profile page, users can update their password and access previously 
 
 ![myplans](docs/images/myplans-1746020328211-23.png)
 
-
-
 #### ● Responsive Design for All Devices
 
 The application is fully responsive and offers an optimal experience across all devices, including desktop, tablet (both orientations), and mobile.
 
-![responsive-new](docs/images/responsive-new.png)
+![responsive-new](docs/images/responsive-new2.png)
 
 ------
 
