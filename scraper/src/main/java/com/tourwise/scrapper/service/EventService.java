@@ -123,10 +123,7 @@ public class EventService {
                             logger.info("🚫 Skipped: Missing name");
                             continue;
                         }
-                        if (event.getEventSiteUrl() == null || event.getEventSiteUrl().isEmpty()) {
-                            logger.info("🚫 Skipped: Missing event URL - {}", event.getName());
-                            continue;
-                        }
+
                         if (event.getImageUrl() == null || event.getImageUrl().isEmpty()) {
                             logger.info("🚫 Skipped: Missing image - {}", event.getName());
                             continue;
@@ -180,15 +177,10 @@ public class EventService {
                     int updatedCount = 0;
 
                     for (EventData event : newEvents) {
-                        boolean exists = eventRepository.existsByNameAndEventSiteUrl(
-                                event.getName(), event.getEventSiteUrl()
-                        );
 
+                        boolean exists = eventRepository.existsByNameAndImageUrl(event.getName(), event.getImageUrl());
                         if (exists) {
-                            EventData existingEvent = eventRepository.findByNameAndEventSiteUrl(
-                                    event.getName(), event.getEventSiteUrl()
-                            );
-                            // ✅ 更新逻辑
+                            EventData existingEvent = eventRepository.findByNameAndImageUrl(event.getName(), event.getImageUrl());
                             existingEvent.setDescription(event.getDescription());
                             existingEvent.setTime_start(event.getTime_start());
                             existingEvent.setTime_end(event.getTime_end());
@@ -199,12 +191,12 @@ public class EventService {
                             eventRepository.save(existingEvent);
                             updatedCount++;
                         } else {
-                            // ✅ 新增逻辑
                             event.setId(UUID.randomUUID());
                             event.setFetchTime(LocalDateTime.now());
                             eventRepository.save(event);
                             savedCount++;
                         }
+
 
                     }
 
