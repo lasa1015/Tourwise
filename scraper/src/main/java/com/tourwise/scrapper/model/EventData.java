@@ -25,58 +25,71 @@ public class EventData {
     @JsonIgnore
     private UUID id;
 
+    @JsonProperty("name")
     @Column(name = "name", length = 512)
     private String name;
 
     @Embedded
     private Location location;
 
+    @JsonProperty("latitude")
     @Column(name = "latitude")
     private Double latitude;
 
+    @JsonProperty("longitude")
     @Column(name = "longitude")
     private Double longitude;
 
+    @JsonProperty("category")
     @Column(name = "category")
     private String category;
 
     @Column(name = "combined_category")
     private String combinedCategory;
 
+    @JsonProperty("description")
     @Column(name = "description", length = 2000)
     private String description;
 
+    @JsonProperty("event_site_url")
     @Column(name = "event_site_url", length = 1000)
     private String eventSiteUrl;
 
+    @JsonProperty("image_url")
     @Column(name = "image_url", length = 1000)
     private String imageUrl;
 
+    @JsonProperty("is_free")
     @Column(name = "is_free")
     private Boolean is_free;
 
+    @JsonProperty("time_start")
     @Column(name = "time_start")
     private String time_start;
 
+    @JsonProperty("time_end")
     @Column(name = "time_end")
     private String time_end;
 
+    @JsonProperty("attending_count")
     @Column(name = "attending_count")
     private Integer attending_count;
 
+    @JsonProperty("interested_count")
     @Column(name = "interested_count")
     private Integer interested_count;
 
+    @JsonProperty("is_canceled")
     @Column(name = "is_canceled")
     private Boolean is_canceled;
 
+    @JsonProperty("is_official")
     @Column(name = "is_official")
     private Boolean is_official;
 
     @Column(name = "fetch_time")
     private LocalDateTime fetchTime;
 
-    //  嵌套地址对象 Location
     @Embeddable
     @Data
     @NoArgsConstructor
@@ -99,13 +112,9 @@ public class EventData {
         private String zipCode;
     }
 
-    // 在 实体插入或更新之前自动执行的逻辑。
-    // 根据原始的 category 字段，生成一个更通用的 combinedCategory 分类
-    // 原始的分类太细了，有几十种；把它们合并成几大类；
-    @PrePersist  // 在执行 INSERT 语句之前调用这个方法
-    @PreUpdate   //在执行 UPDATE 语句之前调用这个方法
+    @PrePersist
+    @PreUpdate
     private void setCombinedCategory() {
-
         switch (this.category) {
             case "music":
                 this.combinedCategory = "Music";
