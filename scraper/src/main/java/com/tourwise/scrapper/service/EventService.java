@@ -16,6 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -111,29 +112,69 @@ public class EventService {
                 if (events != null && !events.isEmpty()) {
                     logger.info("📅 [EventService] {} events fetched from Yelp API.", events.size());
 
-                    List<EventData> newEvents = events.stream()
-                            .filter(event -> !event.getIs_canceled())
-                            .filter(event -> event.getName() != null && !event.getName().isEmpty())
-                            .filter(event -> event.getEventSiteUrl() != null && !event.getEventSiteUrl().isEmpty())
-                            .filter(event -> event.getImageUrl() != null && !event.getImageUrl().isEmpty())
-                            .filter(event -> {
-                                LocalDateTime timeStart = convertToLocalDateTime(event.getTime_start());
-                                LocalDateTime timeEnd = event.getTime_end() != null ?
-                                        convertToLocalDateTime(event.getTime_end()) :
-                                        timeStart.plusHours(2);
-                                if (!timeStart.toLocalDate().equals(timeEnd.toLocalDate())) {
-                                    if (timeStart.plusHours(2).isAfter(timeStart.toLocalDate().atTime(23, 59))) {
-                                        timeEnd = timeStart.toLocalDate().atTime(23, 59);
-                                    } else {
-                                        timeEnd = timeStart.plusHours(2);
-                                    }
-                                }
-                                return timeStart.isAfter(nowInNewYork) &&
-                                        timeStart.isBefore(nowInNewYork.plusDays(30)) &&
-                                        timeEnd.isBefore(nowInNewYork.plusDays(30));
-                            })
-                            .filter(event -> isPointInPolygon(event.getLatitude(), event.getLongitude(), ManhattanArea))
-                            .collect(Collectors.toList());
+                    List<EventData> newEvents = new ArrayList<>();
+
+                    for (EventData event : events) {
+                        if (event.getIs_canceled() != null && event.getIs_canceled()) {
+                            logger.info("🚫 Skipped canceled event: {}", event.getName());
+                            continue;
+                        }
+                        if (event.getName() == null || event.getName().isEmpty()) {
+                            logger.info("🚫 Skipped: Missing name");
+                            continue;
+                        }
+                        if (event.getEventSiteUrl() == null || event.getEventSiteUrl().isEmpty()) {
+                            logger.info("🚫 Skipped: Missing event URL - {}", event.getName());
+                            continue;
+                        }
+                        if (event.getImageUrl() == null || event.getImageUrl().isEmpty()) {
+                            logger.info("🚫 Skipped: Missing image - {}", event.getName());
+                            continue;
+                        }
+
+                        // 时间过滤
+                        LocalDateTime timeStart;
+                        try {
+                            timeStart = convertToLocalDateTime(event.getTime_start());
+                        } catch (Exception e) {
+                            logger.info("🚫 Skipped: Invalid time_start format: {}", event.getTime_start());
+                            continue;
+                        }
+
+                        LocalDateTime timeEnd = (event.getTime_end() != null)
+                                ? convertToLocalDateTime(event.getTime_end())
+                                : timeStart.plusHours(2);
+
+                        if (!timeStart.toLocalDate().equals(timeEnd.toLocalDate())) {
+                            timeEnd = timeStart.plusHours(2);
+                            if (timeEnd.isAfter(timeStart.toLocalDate().atTime(23, 59))) {
+                                timeEnd = timeStart.toLocalDate().atTime(23, 59);
+                            }
+                        }
+
+                        if (timeStart.isBefore(nowInNewYork)) {
+                            logger.info("🚫 Skipped: Start time is in the past - {}", timeStart);
+                            continue;
+                        }
+                        if (timeStart.isAfter(nowInNewYork.plusDays(30))) {
+                            logger.info("🚫 Skipped: Start time too far in the future - {}", timeStart);
+                            continue;
+                        }
+                        if (timeEnd.isAfter(nowInNewYork.plusDays(30))) {
+                            logger.info("🚫 Skipped: End time too far in the future - {}", timeEnd);
+                            continue;
+                        }
+
+                        // 地理坐标判断
+                        if (!isPointInPolygon(event.getLatitude(), event.getLongitude(), ManhattanArea)) {
+                            logger.info("🚫 Skipped: Not in Manhattan - {}, {}", event.getLatitude(), event.getLongitude());
+                            continue;
+                        }
+
+                        // ✅ 通过所有检查
+                        newEvents.add(event);
+                    }
+
 
                     int savedCount = 0;
                     int updatedCount = 0;
