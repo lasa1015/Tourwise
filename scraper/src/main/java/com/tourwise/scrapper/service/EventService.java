@@ -21,11 +21,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-// 曼哈顿多边形可以移到配置文件中，避免硬编码；
-
-// 定期调用 EventScraper（你自己写的爬虫类）从 Yelp API 获取活动数据；
-// 进行数据过滤、转换与整理；去重；存入数据库表 events
-
 @Service
 public class EventService {
     private static final Logger logger = LoggerFactory.getLogger(EventService.class);
@@ -39,8 +34,6 @@ public class EventService {
     @Value("${yelp.limit}")
     private int limit;
 
-    // 区域过滤的坐标数组
-    // 这是曼哈顿地区的多边形坐标，用来判断一个活动是否在曼哈顿区域内
     private static final double[][] ManhattanArea = {
             {-74.4900261866312, 40.68686056618563},
             {-74.02247557630322, 40.68060952571861},
@@ -73,7 +66,6 @@ public class EventService {
             {-74.04903271144373, 40.68685333783202}
     };
 
-    // 判断一个点是否在多边形中（用于地理过滤）
     private boolean isPointInPolygon(double latitude, double longitude, double[][] polygon) {
         int intersectCount = 0;
         for (int i = 0; i < polygon.length - 1; i++) {
@@ -89,7 +81,6 @@ public class EventService {
         return (intersectCount % 2) == 1;
     }
 
-    // 定时任务,每 3 小时自动执行一次
     @Scheduled(fixedRate = 10800000)
     @Transactional
     public void fetchAndSaveEvents() {
@@ -123,13 +114,11 @@ public class EventService {
                             logger.info("🚫 Skipped: Missing name");
                             continue;
                         }
-
                         if (event.getImageUrl() == null || event.getImageUrl().isEmpty()) {
                             logger.info("🚫 Skipped: Missing image - {}", event.getName());
                             continue;
                         }
 
-                        // 时间过滤
                         LocalDateTime timeStart;
                         try {
                             timeStart = convertToLocalDateTime(event.getTime_start());
@@ -162,26 +151,25 @@ public class EventService {
                             continue;
                         }
 
-                        // 地理坐标判断
                         if (!isPointInPolygon(event.getLatitude(), event.getLongitude(), ManhattanArea)) {
                             logger.info("🚫 Skipped: Not in Manhattan - {}, {}", event.getLatitude(), event.getLongitude());
                             continue;
                         }
 
-                        // ✅ 通过所有检查
                         newEvents.add(event);
                     }
-
 
                     int savedCount = 0;
                     int updatedCount = 0;
 
-
-                        for (EventData event : newEvents) {
-                            try {
-                                boolean exists = eventRepository.existsByNameAndImageUrl(event.getName(), event.getImageUrl());
-                                if (exists) {
-                                    EventData existingEvent = eventRepository.findByNameAndImageUrl(event.getName(), event.getImageUrl());
+                    for (EventData event : newEvents) {
+                        try {
+                            EventData existingEvent = eventRepository.findByNameAndImageUrl(event.getName(), event.getImageUrl());
+                            if (existingEvent != null) {
+                                boolean changed = !existingEvent.getDescription().equals(event.getDescription())
+                                        || !existingEvent.getTime_start().equals(event.getTime_start())
+                                        || !existingEvent.getTime_end().equals(event.getTime_end());
+                                if (changed) {
                                     existingEvent.setDescription(event.getDescription());
                                     existingEvent.setTime_start(event.getTime_start());
                                     existingEvent.setTime_end(event.getTime_end());
@@ -191,20 +179,17 @@ public class EventService {
                                     existingEvent.setFetchTime(LocalDateTime.now());
                                     eventRepository.save(existingEvent);
                                     updatedCount++;
-                                } else {
-                                    event.setId(UUID.randomUUID());
-                                    event.setFetchTime(LocalDateTime.now());
-                                    eventRepository.save(event);
-                                    savedCount++;
                                 }
-                            } catch (Exception e) {
-                                logger.warn("⚠️ Failed to save or update event [{}]: {}", event.getName(), e.getMessage());
+                            } else {
+                                event.setId(UUID.randomUUID());
+                                event.setFetchTime(LocalDateTime.now());
+                                eventRepository.save(event);
+                                savedCount++;
                             }
+                        } catch (Exception e) {
+                            logger.warn("⚠️ Failed to save or update event [{}]: {}", event.getName(), e.getMessage());
                         }
-
-
-
-
+                    }
 
                     logger.info("✅ [EventService] Successfully saved {} new events and updated {} existing events.", savedCount, updatedCount);
                 } else {
@@ -222,14 +207,11 @@ public class EventService {
         }
     }
 
-
-    // 时间转换工具方法
     private LocalDateTime convertToLocalDateTime(String dateTimeWithOffset) {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateTimeWithOffset, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         return offsetDateTime.atZoneSameInstant(ZoneId.of("America/New_York")).toLocalDateTime();
     }
 
-    // 把 API 返回的时间（带偏移）转成纽约本地时间
     private String formatLocalDateTime(LocalDateTime localDateTime) {
         return localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
