@@ -27,4 +27,18 @@ public interface EventRepository extends JpaRepository<EventData, UUID> {
     EventData findByNameOrEventSiteUrlOrImageUrl(String name,
                                                  String eventSiteUrl,
                                                  String imageUrl);
+
+
+    @Query("""
+       SELECT COUNT(e) > 0
+       FROM EventData e
+       WHERE e.name = :name AND e.eventSiteUrl = :eventSiteUrl
+       """)
+    boolean existsByNameAndEventSiteUrl(@Param("name") String name,
+                                        @Param("eventSiteUrl") String eventSiteUrl);
+
+
+
+    EventData findByNameAndEventSiteUrl(String name, String eventSiteUrl);
+
 }

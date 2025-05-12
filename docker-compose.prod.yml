@@ -9,11 +9,15 @@ services:
       - "8080:8080"
     networks:
       - tourwise-network
+    mem_limit: 1500m
+    memswap_limit: 2000m
+    restart: unless-stopped
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+
 
   scraper:
     image: ${SCRAPER_IMAGE}

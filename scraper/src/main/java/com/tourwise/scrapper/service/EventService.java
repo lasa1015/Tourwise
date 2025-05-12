@@ -139,15 +139,15 @@ public class EventService {
                     int updatedCount = 0;
 
                     for (EventData event : newEvents) {
-                        boolean exists = eventRepository.existsEventByNameOrUrl(
-                                event.getName(), event.getEventSiteUrl(), event.getImageUrl()
+                        boolean exists = eventRepository.existsByNameAndEventSiteUrl(
+                                event.getName(), event.getEventSiteUrl()
                         );
 
                         if (exists) {
-                            // 如果已存在，找到并更新
-                            EventData existingEvent = eventRepository.findByNameOrEventSiteUrlOrImageUrl(
-                                    event.getName(), event.getEventSiteUrl(), event.getImageUrl()
+                            EventData existingEvent = eventRepository.findByNameAndEventSiteUrl(
+                                    event.getName(), event.getEventSiteUrl()
                             );
+                            // ✅ 更新逻辑
                             existingEvent.setDescription(event.getDescription());
                             existingEvent.setTime_start(event.getTime_start());
                             existingEvent.setTime_end(event.getTime_end());
@@ -158,12 +158,13 @@ public class EventService {
                             eventRepository.save(existingEvent);
                             updatedCount++;
                         } else {
-                            // 如果不存在，插入新数据
+                            // ✅ 新增逻辑
                             event.setId(UUID.randomUUID());
                             event.setFetchTime(LocalDateTime.now());
                             eventRepository.save(event);
                             savedCount++;
                         }
+
                     }
 
                     logger.info("✅ [EventService] Successfully saved {} new events and updated {} existing events.", savedCount, updatedCount);
