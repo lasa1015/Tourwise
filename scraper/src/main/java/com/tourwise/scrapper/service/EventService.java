@@ -176,29 +176,35 @@ public class EventService {
                     int savedCount = 0;
                     int updatedCount = 0;
 
-                    for (EventData event : newEvents) {
 
-                        boolean exists = eventRepository.existsByNameAndImageUrl(event.getName(), event.getImageUrl());
-                        if (exists) {
-                            EventData existingEvent = eventRepository.findByNameAndImageUrl(event.getName(), event.getImageUrl());
-                            existingEvent.setDescription(event.getDescription());
-                            existingEvent.setTime_start(event.getTime_start());
-                            existingEvent.setTime_end(event.getTime_end());
-                            existingEvent.setImageUrl(event.getImageUrl());
-                            existingEvent.setLatitude(event.getLatitude());
-                            existingEvent.setLongitude(event.getLongitude());
-                            existingEvent.setFetchTime(LocalDateTime.now());
-                            eventRepository.save(existingEvent);
-                            updatedCount++;
-                        } else {
-                            event.setId(UUID.randomUUID());
-                            event.setFetchTime(LocalDateTime.now());
-                            eventRepository.save(event);
-                            savedCount++;
+                        for (EventData event : newEvents) {
+                            try {
+                                boolean exists = eventRepository.existsByNameAndImageUrl(event.getName(), event.getImageUrl());
+                                if (exists) {
+                                    EventData existingEvent = eventRepository.findByNameAndImageUrl(event.getName(), event.getImageUrl());
+                                    existingEvent.setDescription(event.getDescription());
+                                    existingEvent.setTime_start(event.getTime_start());
+                                    existingEvent.setTime_end(event.getTime_end());
+                                    existingEvent.setImageUrl(event.getImageUrl());
+                                    existingEvent.setLatitude(event.getLatitude());
+                                    existingEvent.setLongitude(event.getLongitude());
+                                    existingEvent.setFetchTime(LocalDateTime.now());
+                                    eventRepository.save(existingEvent);
+                                    updatedCount++;
+                                } else {
+                                    event.setId(UUID.randomUUID());
+                                    event.setFetchTime(LocalDateTime.now());
+                                    eventRepository.save(event);
+                                    savedCount++;
+                                }
+                            } catch (Exception e) {
+                                logger.warn("⚠️ Failed to save or update event [{}]: {}", event.getName(), e.getMessage());
+                            }
                         }
 
 
-                    }
+
+
 
                     logger.info("✅ [EventService] Successfully saved {} new events and updated {} existing events.", savedCount, updatedCount);
                 } else {
