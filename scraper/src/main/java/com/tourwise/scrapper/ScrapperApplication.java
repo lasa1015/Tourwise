@@ -54,10 +54,10 @@ public class ScrapperApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args){
-        logger.info("\uD83D\uDE80 App started. Running weather and event scrapers.");
-        dailyWeatherForecastService.getDailyForecasts();
-        System.out.println("Daily weather forecast data is stored in tables");
-        eventService.fetchAndSaveEvents();
-        System.out.println("Event data is fetched and stored in events table");
+//        logger.info("\uD83D\uDE80 App started. Running weather and event scrapers.");
+//        dailyWeatherForecastService.getDailyForecasts();
+//        System.out.println("Daily weather forecast data is stored in tables");
+//        eventService.fetchAndSaveEvents();
+//        System.out.println("Event data is fetched and stored in events table");
     }
 }
