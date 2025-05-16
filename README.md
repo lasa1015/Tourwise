@@ -43,34 +43,48 @@ The current version was restructured and redeployed by **Sha Luo**, utilizing **
 
 - **Build Tool**:  Gradle (used in backend and scraper)
 
-- **Deployment & Infrastructure**:  Docker, Docker Compose, Nginx, GitHub Actions,  Hetzner Cloud (CX22), Namecheap
+- **Deployment & Infrastructure**: Docker, Docker Compose, Nginx, Hetzner Cloud (CX22), Namecheap
+
+- **CI/CD**: GitHub Actions , Watchtower
 
 
 ------
 
 ###  System Architecture
 
-![image-20250430145625694](docs/images/image-20250430145625694.png)
+![image-20250516165235461](docs/images/image-20250516165235461.png)
 
-- **Frontend Service** (React + Nginx): 
+#### Frontend Service (React + Nginx)
 
-  A client-facing web application built with React and TypeScript. It provides an interactive interface for users to view attraction and event details, select preferred dates, and generate personalized itineraries. It communicates with the backend via REST APIs and dynamically renders prediction data and schedules using Google Charts and other UI components.
+A client-facing web application built with React and TypeScript, served via Nginx. It provides an interactive interface for users to view attraction and event details, select preferred dates, and generate personalized itineraries. It communicates with the backend via REST APIs and dynamically renders prediction data and schedules using Google Charts and other UI components.
 
-- **Backend Service** (Spring Boot): 
+#### Backend Service (Spring Boot)
 
-  Acts as the main business logic layer. It handles user authentication, itinerary generation, and serves as the central API gateway for data access and prediction services. It connects to the AWS RDS PostgreSQL database to fetch weather and event data and integrates with a machine learning model to predict busyness levels for taxi zones. It also includes a custom scheduling algorithm that intelligently assigns activities to available time slots based on busyness, user preferences, and real-time data.
+Acts as the main business logic layer. It handles user authentication, itinerary generation, and serves as the central API gateway for data access and prediction services. It connects to the AWS RDS PostgreSQL database to fetch weather and event data and integrates with a machine learning model (XGBoost) to predict busyness levels for taxi zones. It also includes a custom scheduling algorithm that intelligently assigns activities to available time slots based on busyness, user preferences, and real-time data.
 
-- **Scraper Service** (Spring Boot): 
+#### Scraper Service (Spring Boot)
 
-  A background service dedicated to data collection. It periodically pulls event information from the Yelp API and weather forecasts from OpenWeather, filters and transforms the raw data, and stores the results in a centralized AWS RDS PostgreSQL database. It also includes polygon-based geofiltering logic to restrict data collection to the Manhattan area.
+A background service dedicated to data collection. It periodically pulls event information from the Yelp API and weather forecasts from OpenWeather, filters and transforms the raw data, and stores the results in a centralized AWS RDS PostgreSQL database. It also includes polygon-based geofiltering logic to restrict data collection to the Manhattan area.
 
-Each service runs in its own Docker container, orchestrated with Docker Compose for simplified deployment, scaling, and maintenance.
+#### Database (AWS RDS PostgreSQL)
 
-In addition to the services, the platform relies on a centralized database component:
+Provides reliable and scalable persistent storage for all application data, including:
 
-- AWS RDS PostgreSQL :
+- user accounts
+- itineraries
+- weather forecasts
+- event listings
+- machine learning prediction results
 
-  Provides reliable and scalable persistent storage for all application data, including user accounts, itineraries, weather forecasts, event listings, and machine learning prediction results. A detailed schema is documented in `docs/schema.md`.
+A detailed schema is documented in `docs/schema.md`. All services read from and write to this central data store.
+
+#### Deployment & Infrastructure
+
+Each service runs in its own Docker container. All containers are orchestrated using Docker Compose for simplified deployment, scaling, and maintenance. The platform is hosted on a Hetzner Cloud CX22 instance. Nginx serves both as the frontend static file server and as a reverse proxy that routes requests to backend APIs.
+
+#### CI/CD Workflow
+
+CI/CD is implemented using GitHub Actions and Watchtower. GitHub Actions builds and pushes updated Docker images upon each code commit. Watchtower monitors containers and automatically pulls and reloads updated images to ensure continuous deployment with minimal manual intervention.
 
 ------
 
