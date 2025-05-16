@@ -52,7 +52,7 @@ The current version was restructured and redeployed by **Sha Luo**, utilizing **
 
 ###  System Architecture
 
-![image-20250516165235461](docs/images/image-20250516165235461.png)
+![arch](docs/images/arch.png)
 
 #### Frontend Service (React + Nginx)
 
