@@ -54,7 +54,7 @@ This update also introduces backend improvements such as persisting prediction r
 
 ###  System Architecture
 
-![image-20250520152258327](docs/images/image-20250520152258327.png)
+![arch2](docs/images/arch2.png)
 
 #### Frontend Service (React + Nginx)
 
