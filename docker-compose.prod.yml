@@ -57,10 +57,10 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - WATCHTOWER_CLEANUP=true                # 自动删除旧镜像
-      - WATCHTOWER_POLL_INTERVAL=300          # 每 300 秒（5 分钟）检查一次
-      - WATCHTOWER_INCLUDE_RESTARTING=true    # 处理正在重启的容器
-      - WATCHTOWER_LABEL_ENABLE=true          # 只更新带 label 的容器（可选，下面说明）
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_LABEL_ENABLE=true
     restart: unless-stopped
     networks:
       - tourwise-network
