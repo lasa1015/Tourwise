@@ -23,7 +23,9 @@ This project was originally developed in an academic environment by a team of si
 
 Initially deployed on a private monolithic server, the system was later taken offline after assessment.
 
-The current version was restructured and redeployed by **Sha Luo**, utilizing **AWS RDS (PostgreSQL)** for persistent storage and a **Hetzner server** for hosting. The deployment is containerized with **Docker** and automated through **GitHub Actions** for continuous integration and delivery (CI/CD). This update also introduces backend improvements such as persisting prediction results to the database—reducing reliance on in-memory storage and enhancing data availability. Several frontend bugs were fixed to improve stability and user experience.
+The current version was restructured and redeployed by **Sha Luo**, utilizing **AWS RDS (PostgreSQL)** for persistent storage and an **Azure VM  (Standard B2s)** for hosting. The deployment is containerized with **Docker** and automated through **GitHub Actions** for continuous integration and delivery (CI/CD). 
+
+This update also introduces backend improvements such as persisting prediction results to the database—reducing reliance on in-memory storage and enhancing data availability. Several frontend bugs were fixed to improve stability and user experience.
 
 ------
 
@@ -43,7 +45,7 @@ The current version was restructured and redeployed by **Sha Luo**, utilizing **
 
 - **Build Tool**:  Gradle (used in backend and scraper)
 
-- **Deployment & Infrastructure**: Docker, Docker Compose, Nginx, Hetzner Cloud (CX22), Namecheap
+- **Deployment & Infrastructure**: Docker, Docker Compose, Nginx, Azure VM (Standard B2s), Namecheap
 
 - **CI/CD**: GitHub Actions , Watchtower
 
@@ -52,7 +54,7 @@ The current version was restructured and redeployed by **Sha Luo**, utilizing **
 
 ###  System Architecture
 
-![arch](docs/images/arch.png)
+![image-20250520152258327](docs/images/image-20250520152258327.png)
 
 #### Frontend Service (React + Nginx)
 
@@ -80,7 +82,7 @@ A detailed schema is documented in `docs/schema.md`. All services read from and 
 
 #### Deployment & Infrastructure
 
-Each service runs in its own Docker container. All containers are orchestrated using Docker Compose for simplified deployment, scaling, and maintenance. The platform is hosted on a Hetzner Cloud CX22 instance. Nginx serves both as the frontend static file server and as a reverse proxy that routes requests to backend APIs.
+Each service runs in its own Docker container. Containers are orchestrated via Docker Compose to simplify deployment and maintenance. The platform is hosted on an **Azure VM (Standard B2s)**. Nginx serves both as the frontend static file server and as a reverse proxy that routes requests to backend APIs.
 
 #### CI/CD Workflow
 
